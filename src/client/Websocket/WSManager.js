@@ -54,6 +54,10 @@ class WSManager extends EventEmitter {
       return console.log("[WS ERROR] Invalid token!");
       } else if(data == "4011") {
       return console.log("[WS ERROR] Sharding required to connect to discord");
+      } else if(data == "4009") {
+      return console.log("[WS ERROR] Session timed out");
+      } else if(data == "4000") {
+      return console.log("[WS ERROR] Unknown error");
       }
     })
   }
