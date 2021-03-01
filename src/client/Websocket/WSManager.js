@@ -1,3 +1,4 @@
+// Import Requires
 const EventEmitter = require("events");
 const WebSocket = require("ws");
 
@@ -7,7 +8,7 @@ class WSManager extends EventEmitter {
   }
 
   async destroy() {
-    console.log("[WS] Connection Destroyed!")
+    console.log("[WS] Connection Destroyed!");
     process.exit();
   }
 
