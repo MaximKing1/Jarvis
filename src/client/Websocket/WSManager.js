@@ -12,19 +12,10 @@ class WSManager extends EventEmitter {
   }
 
   async connect() {
-    const ws = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json", {
-      perMessageDeflate: {
-        zlibInflateOptions: { chunkSize: 10 * 1024 }
-      }
-    });
+    const ws = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json");
 
     // Listens for the server open event
     ws.on("open", async function open(data) {
-      await ws.send(`{
-        d: {
-          "token": ${this.token}
-        }
-      }`);
       console.log("[WS] Connected to the discord gateway")
     });
 
@@ -33,7 +24,7 @@ class WSManager extends EventEmitter {
       let dataJSON = JSON.parse(data);
       console.log(dataJSON)
        await setInterval(async () => {
-         await ws.send(`{"op": ${dataJSON.op}, "d": ${dataJSON.s}}`);
+         await ws.send(`{"op": ${dataJSON.op}, "d": ${dataJSON.d}}`);
          await console.log("[WS] Heartbeat sent");
        }, dataJSON.d.heartbeat_interval);
     });
