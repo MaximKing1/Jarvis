@@ -25,7 +25,12 @@ class Client extends BaseClient {
     }
   }
 
-  async destroy() {
+  async user() {
+
+  return user;
+  }
+
+  destroy() {
   this.ws.destroy();
   }
 
