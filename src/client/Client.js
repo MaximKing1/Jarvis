@@ -6,8 +6,7 @@ const WSManager = require("./Websocket/WSManager");
 class Client extends BaseClient {
   constructor(options) {
     super(options);
-
-      /**
+     /**
      * The clients WebsocketManager
      * @type {WebsocketManager}
      */
