@@ -3,9 +3,9 @@ const EventEmitter = require("events");
 const WebSocket = require("ws");
 
 class WSManager extends EventEmitter {
-      
-  constructor() {
+  constructor(client) {
     super();
+
       this.socket = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json");
    }
 
