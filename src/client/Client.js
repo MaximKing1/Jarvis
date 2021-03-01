@@ -25,6 +25,10 @@ class Client extends BaseClient {
     }
   }
 
+  get readyTimestamp() {
+    return this.readyAt : null;
+  }
+
   async user() {
 
   return user;
