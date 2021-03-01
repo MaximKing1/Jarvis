@@ -3,9 +3,11 @@ const EventEmitter = require("events");
 const WebSocket = require("ws");
 
 class WSManager extends EventEmitter {
-  constructor() {
-    super();
-  }
+      
+   constructor() {
+     super();
+       this.socket = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json");
+    }
 
   async destroy() {
     console.log("[WS] Connection Destroyed!");
@@ -13,15 +15,13 @@ class WSManager extends EventEmitter {
   }
 
   async connect() {
-    const ws = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json");
-
     // Listens for the server open event
-    ws.on("open", async function open(data) {
+    this.socket.on("open", async function open(data) {
       console.log("[WS] Connected to the discord gateway")
     });
 
     // Listen for websocket messages then reply
-    ws.on("message", async function incoming(data) {
+    this.socket.on("message", async function incoming(data) {
       let dataJSON = JSON.parse(data);
       var objectString = {
        op: dataJSON.op,
@@ -34,7 +34,7 @@ class WSManager extends EventEmitter {
        }, dataJSON.d.heartbeat_interval);
     });
 
-    ws.on("close", function incoming(data) {
+    this.socket.on("close", function incoming(data) {
       console.log("[WS] Connection died")
       console.log(data)
     })
