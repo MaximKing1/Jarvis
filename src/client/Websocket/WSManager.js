@@ -2,6 +2,17 @@
 
 const EventEmitter = require("events");
 const WebSocket = require("ws");
+const { WSEvents } = require('../../util/Constants');
+
+const ReadyWhitelist = [
+  WSEvents.READY,
+  WSEvents.RESUMED,
+  WSEvents.GUILD_CREATE,
+  WSEvents.GUILD_DELETE,
+  WSEvents.GUILD_MEMBERS_CHUNK,
+  WSEvents.GUILD_MEMBER_ADD,
+  WSEvents.GUILD_MEMBER_REMOVE,
+];
 
 const UNRESUMABLE_CLOSE_CODES = [1000, 4006, 4007];
 
@@ -18,6 +29,9 @@ class WSManager extends EventEmitter {
   }
 
   async connect() {
+
+    console.log(`Session Limit Information:\nTotal: ${total}\nRemaining: ${remain}`);
+
     // Listens for the server open event
     this.socket.on("open", async function open(data) {
       console.log("[WS] Connected to the discord gateway")
