@@ -1,6 +1,9 @@
-// Import Requires
+'use strict';
+
 const EventEmitter = require("events");
 const WebSocket = require("ws");
+
+const UNRESUMABLE_CLOSE_CODES = [1000, 4006, 4007];
 
 class WSManager extends EventEmitter {
   constructor(client) {
