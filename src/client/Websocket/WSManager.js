@@ -29,7 +29,6 @@ class WSManager extends EventEmitter {
   }
 
   async connect() {
-
     console.log(`Session Limit Information:\nTotal: ${total}\nRemaining: ${remain}`);
 
     // Listens for the server open event
@@ -60,6 +59,16 @@ class WSManager extends EventEmitter {
       return console.log("[WS ERROR] Unknown error");
       }
     })
+  }
+
+  triggerClientReady() {
+    this.client.readyAt = new Date();
+
+    /**
+     * Emitted when the client becomes ready to start working.
+     * @event Client#ready
+     */
+    this.emit("ready");
   }
 }
 
