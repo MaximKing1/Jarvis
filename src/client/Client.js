@@ -30,10 +30,6 @@ class Client extends BaseClient {
   return user;
   }
 
-  destroy() {
-  this.ws.destroy();
-  }
-
   async login(token = this.token) {
     if (!token || typeof token !== "string") throw new Error("TOKEN_INVALID");
     this.token = token;
@@ -53,6 +49,12 @@ class Client extends BaseClient {
       this.ws.destroy();
       throw error;
     }
+  }
+
+  destroy() {
+  super.destroy();
+  this.ws.destroy();
+  this.token = null;
   }
 }
 
