@@ -52,7 +52,9 @@ class WSManager extends EventEmitter {
       return console.log("[WS ERROR] Rate Limited!");
       } else if(data == "4003") {
       return console.log("[WS ERROR] Invalid token!");
-      } 
+      } else if(data == "4011") {
+      return console.log("[WS ERROR] Sharding required to connect to discord");
+      }
     })
   }
 }
