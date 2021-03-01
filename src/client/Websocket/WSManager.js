@@ -2,7 +2,7 @@
 
 const EventEmitter = require("events");
 const WebSocket = require("ws");
-const { WSEvents } = require('../../util/Constants');
+const { WSEvents, Heartbeat } = require('../../util/Constants');
 
 const ReadyWhitelist = [
   WSEvents.READY,
@@ -40,20 +40,19 @@ class WSManager extends EventEmitter {
     // Listen for websocket messages then reply
     this.socket.on("message", async function incoming(data) {
       let dataJSON = JSON.parse(data);
-      var objectString = {
-       op: "1",
-       d: null
-      }
-      console.log(dataJSON)
        await setInterval(async () => {
-         await ws.send(objectString);
+         await ws.send(Heartbeat);
          await console.log("[WS] Heartbeat sent");
        }, dataJSON.d.heartbeat_interval);
     });
 
     this.socket.on("close", function incoming(data) {
-      console.log("[WS] Connection died")
-      console.log(data)
+      console.log("[WS] Connection died");
+      if(data == "4008") {
+      return console.log("[WS ERROR] Rate Limited!");
+      } else if(data == "4003") {
+      return console.log("[WS ERROR] Invalid token!");
+      } 
     })
   }
 }
