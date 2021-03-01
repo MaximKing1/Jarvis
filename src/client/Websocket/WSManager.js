@@ -4,10 +4,10 @@ const WebSocket = require("ws");
 
 class WSManager extends EventEmitter {
       
-   constructor() {
-     super();
-       this.socket = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json");
-    }
+  constructor() {
+    super();
+      this.socket = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json");
+   }
 
   async destroy() {
     console.log("[WS] Connection Destroyed!");
