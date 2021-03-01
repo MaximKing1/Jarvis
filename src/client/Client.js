@@ -25,6 +25,10 @@ class Client extends BaseClient {
     }
   }
 
+  async destroy() {
+  this.ws.destroy();
+  }
+
   async login(token = this.token) {
     if (!token || typeof token !== "string") throw new Error("TOKEN_INVALID");
     this.token = token;
