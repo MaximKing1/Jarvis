@@ -22,9 +22,13 @@ class WSManager extends EventEmitter {
     // Listen for websocket messages then reply
     ws.on("message", async function incoming(data) {
       let dataJSON = JSON.parse(data);
+      var objectString = {
+       op: dataJSON.op,
+       d: dataJSON.d
+      }
       console.log(dataJSON)
        await setInterval(async () => {
-         await ws.send(`{"op": ${dataJSON.op}, "d": ${dataJSON.d}}`);
+         await ws.send(objectString);
          await console.log("[WS] Heartbeat sent");
        }, dataJSON.d.heartbeat_interval);
     });
