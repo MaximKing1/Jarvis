@@ -7,7 +7,7 @@ class WSManager extends EventEmitter {
   }
 
   async destroy() {
-    console.log("[WS] ")
+    console.log("[WS] Connection Destroyed!")
     process.exit();
   }
 
