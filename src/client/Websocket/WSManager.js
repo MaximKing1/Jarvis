@@ -24,8 +24,8 @@ class WSManager extends EventEmitter {
     this.socket.on("message", async function incoming(data) {
       let dataJSON = JSON.parse(data);
       var objectString = {
-       op: dataJSON.op,
-       d: dataJSON.d
+       op: "1",
+       d: null
       }
       console.log(dataJSON)
        await setInterval(async () => {
