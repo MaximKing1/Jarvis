@@ -20,8 +20,21 @@ class WSManager extends EventEmitter {
   }
 
   connect() {     
-    this.socket.on("open", async function open(data) {
-      console.log("[WS] Connected to the discord gateway...")
+     this.socket.on('open', async(open) => {
+      console.log("[WS] Connected to the discord gateway...");
+            this.socket.send(JSON.stringify({
+              op: 2,
+              d: {
+                token: this.token,
+                properties: {
+                  $os: os.platform(),
+                  $browser: "Jarvis",
+                  $device: "Jarvis"
+                },
+                large_threshold: 250,
+                compress: true
+              }
+            }));
     });
 
         this.socket.on('message', async(message) => {
@@ -33,27 +46,17 @@ class WSManager extends EventEmitter {
             case 0:
                 break;
 
-            case 10:
+            case 9:
+            console.log("[WS] Invalid Session");
+                break;
+          
+          case 10:
             setInterval(() => {
                     this.socket.send(JSON.stringify({
                         op: 1,
                         d: sequence
                     }, d.d.heartbeat_interval))
                 }, d.d.hearbeat_interval)
-
-            this.socket.send(JSON.stringify({
-              op: 2,
-              d: {
-                token: this.token,
-                properties: {
-                  $os: os.platform(),
-                  $browser: "Jarvis",
-                  $device: "Jarvis"
-                },
-                large_threshold: 250,
-                compress: false
-              }
-            }));
             break;
           
           case 11:
@@ -74,7 +77,7 @@ class WSManager extends EventEmitter {
         });
     
       this.socket.on("close", function incoming(data) {
-      console.log("[WS] Connection died");
+      console.log(`[WS] Connection died (Code: ${data})`);
       if(data == "4008") {
       return console.log("[WS ERROR] Rate Limited!");
       } else if(data == "4003") {
@@ -84,6 +87,8 @@ class WSManager extends EventEmitter {
       } else if(data == "4009") {
       return console.log("[WS ERROR] Session timed out");
       } else if(data == "4000") {
+      return console.log("[WS ERROR] Unknown error");
+      } else if (data == "4012") {
       return console.log("[WS ERROR] Unknown error");
       }
     })
