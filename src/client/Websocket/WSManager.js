@@ -80,7 +80,7 @@ class WSManager extends EventEmitter {
             const { d: user } = JSON.parse(message) || incoming;
             console.log("Event Recived")
             try {
-                const { default: module } = await import(`../events/${event}.js`);
+                const { default: module } = await import(`../../events/${event}.js`);
                 module(this.client, JSON.parse(message.toString()))
             } catch(err) {
                 throw err;

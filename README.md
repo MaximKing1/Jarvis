@@ -6,6 +6,7 @@
 
 - [Installation](#installation)
 - [Setup](#setup)
+- [Events](#events)
 
 # Installation
 
