@@ -19,11 +19,15 @@ class WSManager extends EventEmitter {
     process.exit();
   }
 
-      connect() {  
+  connect() {     
+    this.socket.on("open", async function open(data) {
+      console.log("[WS] Connected to the discord gateway...")
+    });
+
         this.socket.on('message', async(message) => {
         const d = JSON.parse(message) || incoming;
         const { t: event } = JSON.parse(message) || incoming;
-       const sequence = d.s;
+        const sequence = d.s;
 
         switch(d.op) {
             case 0:
@@ -59,7 +63,7 @@ class WSManager extends EventEmitter {
 
           if(event) {
             const { d: user } = JSON.parse(message) || incoming;
-console.log("Event Recived")
+            console.log("Event Recived")
             try {
                 const { default: module } = await import(`../events/${event}.js`);
                 module(this.client, JSON.parse(message.toString()))
@@ -67,7 +71,22 @@ console.log("Event Recived")
                 throw err;
             }
         }
-      });
+        });
+    
+      this.socket.on("close", function incoming(data) {
+      console.log("[WS] Connection died");
+      if(data == "4008") {
+      return console.log("[WS ERROR] Rate Limited!");
+      } else if(data == "4003") {
+      return console.log("[WS ERROR] Invalid token!");
+      } else if(data == "4011") {
+      return console.log("[WS ERROR] Sharding required to connect to discord");
+      } else if(data == "4009") {
+      return console.log("[WS ERROR] Session timed out");
+      } else if(data == "4000") {
+      return console.log("[WS ERROR] Unknown error");
+      }
+    })
     }
 
   triggerClientReady() {
