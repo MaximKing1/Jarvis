@@ -11,7 +11,7 @@ class WSManager extends EventEmitter {
   constructor(client) {
     super();
     this.client = client;
-    this.socket = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json");
+    this.socket = new WebSocket(`wss://gateway.discord.gg/?v=8&encoding=json`);
    }
 
   async destroy() {

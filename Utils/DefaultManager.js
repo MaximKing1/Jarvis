@@ -1,5 +1,6 @@
 exports.DefaultOptions = {
   shardCount: 1,
+  gatewayVersion: "8",
   messageCacheMaxSize: 200,
   messageCacheLifetime: 0,
   messageSweepInterval: 0,

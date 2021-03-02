@@ -3,6 +3,7 @@
 const BaseClient = require("./BaseClient");
 const WSManager = require("./Websocket/WSManager");
 const { ClientUser } = require("./ClientUser.js");
+const os = require('os');
 
 class Client extends BaseClient {
   constructor(options) {
@@ -34,6 +35,10 @@ class Client extends BaseClient {
 
   get readyTimestamp() {
     return this.readyAt || null;
+  }
+
+  get uptimeMS() {
+    return os.uptime();
   }
 
   async user() {
