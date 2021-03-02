@@ -4,6 +4,7 @@ const EventEmitter = require("events");
 const WebSocket = require("ws");
 const os = require('os');
 const { WSEvents } = require('../../constants/Constants');
+const { Gateway } = require('../../connections');
 
 const UNRESUMABLE_CLOSE_CODES = [1000, 4006, 4007];
 
@@ -11,7 +12,7 @@ class WSManager extends EventEmitter {
   constructor(client) {
     super();
     this.client = client;
-    this.socket = new WebSocket(`wss://gateway.discord.gg/?v=8&encoding=json`);
+    this.socket = new WebSocket(Gateway);
    }
 
   async destroy() {
@@ -32,7 +33,8 @@ class WSManager extends EventEmitter {
                   $device: "Jarvis"
                 },
                 large_threshold: 250,
-                compress: true
+                compress: false,
+                presence: this.client.options.presence
               }
             }));
     });

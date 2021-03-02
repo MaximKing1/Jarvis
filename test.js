@@ -1,6 +1,8 @@
 const discord = require("./src/index.js");
 
-const client = new discord.Client();
+const client = new discord.Client({
+  presence: "online",
+});
 
 console.log(client.uptime)
 

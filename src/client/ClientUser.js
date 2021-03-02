@@ -10,3 +10,5 @@ class ClientUser {
         this.avatar         //string
     }
 }
+
+module.exports = ClientUser;
