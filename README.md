@@ -5,7 +5,7 @@
 # Table of Contents
 
 - [Installation](#installation)
-- [Setup](#setup)
+- [Usage](#usage)
 - [Events](#events)
 
 # Installation
@@ -32,7 +32,7 @@ yarn add jarvis.djs
 yarn add jarvis.djs@nightly
 ```
 
-# Setup
+# Usage
 
 ### Import the lib via ES6 or commonJS modules
 
@@ -43,7 +43,7 @@ import * as discord from "jarvis.djs";
 const discord = require("jarvis.djs");
 ```
 
-### Seting it up
+### Client
 
 ```js
 const discord = require('jarvis.djs');
@@ -52,6 +52,12 @@ const client = new discord.Client({
     status: {
         text: "Status Text",
         type: 0 // Types: 0 = Playing, 1 = Streaming, 2 = Listening
+    },
+    cache: {
+        fetchAllMembers: false,
+        fetchAllGuilds: false,
+        fetchAllRoles: false,
+        fetchAllChannels: false
     }
 });
 
@@ -60,6 +66,18 @@ client.on("ready", async() => {
 })
 
 client.login("TOKEN")
+```
+
+### Client Methods
+
+**Destroy Client:**
+```js
+client.destroy(); // Will destroy the client along with the discord connection
+```
+
+**Ready Timestamp:**
+```js
+client.readyAt();
 ```
 
 # Events
