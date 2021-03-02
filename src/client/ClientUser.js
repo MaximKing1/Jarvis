@@ -1,4 +1,4 @@
-export class ClientUser {
+class ClientUser {
     constructor() {
         this.username,      //string
         this.discriminator, //string

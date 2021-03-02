@@ -2,7 +2,7 @@
 
 const BaseClient = require("./BaseClient");
 const WSManager = require("./Websocket/WSManager");
-import { ClientUser } from './ClientUser.js';
+const { ClientUser } = require("./ClientUser.js");
 
 class Client extends BaseClient {
   constructor(options) {
@@ -33,7 +33,7 @@ class Client extends BaseClient {
   }
 
   get readyTimestamp() {
-    return this.readyAt : null;
+    return this.readyAt || null;
   }
 
   async user() {

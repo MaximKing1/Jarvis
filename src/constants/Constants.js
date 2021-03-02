@@ -1,8 +1,3 @@
-exports.Heartbeat = {
-    op: 1,
-    d: null
-};
-
 exports.WSCodes = {
   1000: 'WS_CLOSE_REQUESTED',
   4004: 'TOKEN_INVALID',
