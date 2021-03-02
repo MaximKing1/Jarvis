@@ -2,6 +2,7 @@
 
 const BaseClient = require("./BaseClient");
 const WSManager = require("./Websocket/WSManager");
+import { ClientUser } from './ClientUser.js';
 
 class Client extends BaseClient {
   constructor(options) {
