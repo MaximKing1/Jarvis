@@ -1,3 +1,3 @@
 export default function (client, payload) {
-    client.emit('guildCreate', payload);
+    client.emit('guildDelete', payload);
 }
