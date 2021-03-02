@@ -1,8 +1,23 @@
 {
   "name": "jarvis.djs",
-  "version": "1.0.2",
-  "description": "",
+  "version": "1.0.4",
+  "description": "Jarvis.djs Is a Javascript Discord Client Used For Interacting With The Discord API",
   "main": "src/index.js",
+  "keywords": [
+    "discord",
+    "javascript",
+    "discordapi",
+    "api",
+    "jarvis.djs",
+    "discordjavascript",
+    "client",
+    "discordclient",
+    "voice",
+    "slashcommands",
+    "slash",
+    "commands",
+    "events"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
