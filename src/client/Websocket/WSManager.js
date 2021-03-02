@@ -21,7 +21,7 @@ class WSManager extends EventEmitter {
   }
 
   connect() {     
-     this.socket.on('open', async(open) => {
+    this.socket.on('open', async(open) => {
       console.log("[WS] Connected to the discord gateway...");
             this.socket.send(JSON.stringify({
               op: 2,
@@ -34,9 +34,18 @@ class WSManager extends EventEmitter {
                 },
                 large_threshold: 250,
                 compress: false,
-                presence: this.client.options.presence
+                presence: {
+                 activities: [{
+                  name: this.client.options.status.text,
+                   type: this.client.options.status.type
+                  }],
+                  status: this.client.options.presence,
+                  since: Date.now(),
+                  afk: false
+                }
               }
             }));
+          this.client.readyAt = new Date();
     });
 
         this.socket.on('message', async(message) => {
@@ -97,7 +106,6 @@ class WSManager extends EventEmitter {
     }
 
   triggerClientReady() {
-    this.client.readyAt = new Date();
     /**
      * Emitted when the client becomes ready to start working.
      * @event Client#ready
