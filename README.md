@@ -7,6 +7,7 @@
 - [Installation](#installation)
 - [Usage](#usage)
 - [Events](#events)
+- [Discord Gateway](#discord-gateway)
 
 # Installation
 
@@ -83,7 +84,7 @@ client.readyAt();
 # Events
 
 ## Events To-Do List
-```
+```js
 GUILDS (1 << 0)
   - GUILD_CREATE // Done
   - GUILD_UPDATE // Done
@@ -154,3 +155,6 @@ DIRECT_MESSAGE_REACTIONS (1 << 13)
 DIRECT_MESSAGE_TYPING (1 << 14)
   - TYPING_START
 ```
+
+# Discord Gateway
+This is the connection between the client and discord api servers.
