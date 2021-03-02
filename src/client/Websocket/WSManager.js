@@ -19,7 +19,7 @@ const UNRESUMABLE_CLOSE_CODES = [1000, 4006, 4007];
 class WSManager extends EventEmitter {
   constructor(client) {
     super();
-
+      this.client = client;
       this.socket = new WebSocket("wss://gateway.discord.gg/?v=8&encoding=json");
    }
 
