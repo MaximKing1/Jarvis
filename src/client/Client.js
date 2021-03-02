@@ -19,6 +19,12 @@ class Client extends BaseClient {
      */
     this.readyAt = null;
 
+    /**
+     * Client user
+     * @type {client.user}
+     */
+    this._user = null;
+
     if (!this.token && "DISCORD_TOKEN" in process.env) {
       this.token = process.env.DISCORD_TOKEN;
     } else {
