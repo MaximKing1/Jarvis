@@ -101,7 +101,7 @@ class WSManager extends EventEmitter {
       } else if(data == "4000") {
       return console.log("[WS ERROR] Unknown error");
       } else if (data == "4012") {
-      return console.log("[WS ERROR] Unknown error");
+      return console.log("[WS ERROR] Invalid API Version");
       }
     })
     }
