@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const BaseClient = require("./BaseClient");
 const WSManager = require("./Websocket/WSManager");
