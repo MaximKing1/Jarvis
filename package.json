@@ -1,6 +1,6 @@
 {
   "name": "jarvis.djs",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Jarvis.djs Is a Javascript Discord Client Used For Interacting With The Discord API",
   "main": "src/index.js",
   "keywords": [
@@ -21,7 +21,17 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "https://github.com/MaximKing1/Jarvis.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaximKing1/Jarvis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MaximKing1/Jarvis/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "homepage": "hthttps://github.com/MaximKing1/Jarvis#readme",
   "author": "MaximKing1",
   "license": "Apache-2.0",
   "dependencies": {
@@ -29,6 +39,7 @@
     "events": "^3.3.0",
     "got": "^11.8.2",
     "merge": "^2.1.1",
+    "node-fetch": "^2.6.1",
     "os": "^0.1.1",
     "ws": "^7.4.3"
   }

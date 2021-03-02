@@ -1,4 +1,4 @@
-import { ClientUser } from '../client/ClientUser.js';
+const { ClientUser } = require('../client/ClientUser.js');
 
 export default function (client, payload) {
     const { d: user } = payload;

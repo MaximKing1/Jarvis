@@ -26,6 +26,12 @@ class Client extends BaseClient {
      */
     this._user = null;
 
+    /**
+     * Client Session ID Used For Gateway Reconnections, This Will Reset After Restart.
+     * @type {api.session_id}
+     */
+    this.session_id = null;
+
     if (!this.token && "DISCORD_TOKEN" in process.env) {
       this.token = process.env.DISCORD_TOKEN;
     } else {

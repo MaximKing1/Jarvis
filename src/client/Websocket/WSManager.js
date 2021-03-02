@@ -5,7 +5,7 @@ const WebSocket = require("ws");
 const os = require('os');
 const { WSEvents } = require('../../constants/Constants');
 const { Gateway } = require('../../connections');
-const got = require('got');
+const fetch = require('node-fetch');
 
 const UNRESUMABLE_CLOSE_CODES = [1000, 4006, 4007];
 
@@ -24,43 +24,55 @@ class WSManager extends EventEmitter {
   connect() {
     this.socket.on('open', async(open) => {
       console.log("[WS] Connected to the discord gateway...");
-            this.socket.send(JSON.stringify({
-              op: 2,
-              d: {
-                token: this.token,
-                properties: {
-                  $os: os.platform(),
-                  $browser: "Jarvis",
-                  $device: "Jarvis"
-                },
-                large_threshold: 250,
-                compress: false,
-                presence: {
-                 activities: [{
-                  name: this.client.options.status.text,
-                   type: this.client.options.status.type
-                  }],
-                  status: this.client.options.presence,
-                  since: Date.now(),
-                  afk: false
-                }
-              }
-            }));
-          this.client.readyAt = new Date();
+      this.socket.send(JSON.stringify({
+        op: 2,
+        d: {
+          token: this.token,
+          properties: {
+            $os: os.platform(),
+            $browser: "Jarvis",
+            $device: "Jarvis"
+          },
+          large_threshold: 250,
+          compress: false,
+          presence: {
+            activities: [{
+              name: this.client.options.status.text,
+              type: this.client.options.status.type
+            }],
+            status: this.client.options.presence,
+            since: Date.now(),
+            afk: false
+          }
+        }
+      }));
+      this.client.readyAt = new Date();
     });
 
-        this.socket.on('message', async(message) => {
-        const d = JSON.parse(message) || incoming;
+    this.socket.on('message', async (message) => {
+      const d = JSON.parse(message) || incoming;
         const { t: event } = JSON.parse(message) || incoming;
         const sequence = d.s;
 
         switch(d.op) {
-            case 0:
-                break;
-
+          case 0:
+           console.log("[WS] Event") 
+          break;
+          
+            case 7:
+            this.socket.send(JSON.stringify({
+              op: 6,
+              d: {
+                token: this.token,
+                session_id: this.session_id,
+                seq: 1337
+              }
+            }, d.d.heartbeat_interval));
+            break;
+          
             case 9:
             console.log("[WS] Invalid Session");
-                break;
+            break;
           
           case 10:
             setInterval(() => {
