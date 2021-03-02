@@ -12,6 +12,7 @@
   "dependencies": {
     "bufferutil": "^4.0.3",
     "events": "^3.3.0",
+    "got": "^11.8.2",
     "merge": "^2.1.1",
     "os": "^0.1.1",
     "ws": "^7.4.3"

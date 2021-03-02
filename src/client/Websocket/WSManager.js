@@ -5,6 +5,7 @@ const WebSocket = require("ws");
 const os = require('os');
 const { WSEvents } = require('../../constants/Constants');
 const { Gateway } = require('../../connections');
+const got = require('got');
 
 const UNRESUMABLE_CLOSE_CODES = [1000, 4006, 4007];
 
@@ -20,7 +21,7 @@ class WSManager extends EventEmitter {
     process.exit();
   }
 
-  connect() {     
+  connect() {
     this.socket.on('open', async(open) => {
       console.log("[WS] Connected to the discord gateway...");
             this.socket.send(JSON.stringify({
