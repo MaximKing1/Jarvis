@@ -51,7 +51,7 @@ const client = new discord.Client({
     presence: "online",
     status: {
         text: "Status Text",
-        type: 0
+        type: 0 // Types: 0 = Playing, 1 = Streaming, 2 = Listening
     }
 });
 
@@ -61,3 +61,6 @@ client.on("ready", async() => {
 
 client.login("TOKEN")
 ```
+
+# Events
+Soon!
