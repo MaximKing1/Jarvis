@@ -2,16 +2,23 @@
 
 const BaseClient = require("./BaseClient");
 const WSManager = require("./Websocket/WSManager");
-const os = require('os');
+const RequestHandler = require("./../rest/RequestHandler");
 
 class Client extends BaseClient {
   constructor(options) {
     super(options);
-     /**
+
+    /**
      * The clients WebsocketManager
      * @type {WebsocketManager}
      */
     this.ws = new WSManager(this);
+
+    /**
+     * The clients RequestHandler
+     * @type {RequestHandler}
+     */
+    this.api = new RequestHandler(this);
 
     this.readyAt = null;
     this._user = null;
