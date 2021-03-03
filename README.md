@@ -76,9 +76,9 @@ const client = new discord.Client({
 
 client.on("ready", async() => {
     console.log("Ready!")
-})
+});
 
-client.login("TOKEN")
+client.login("TOKEN");
 ```
 
 ### Client Methods
@@ -94,6 +94,15 @@ client.readyAt();
 ```
 
 # Events
+
+**Ready Event:**
+```js
+ready - When Client Is Ready
+warn - Warnings
+error - When There Is An Error
+```
+
+**
 
 ## Events To-Do List
 ```js
