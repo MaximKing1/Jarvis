@@ -44,7 +44,8 @@ class Client extends BaseClient {
 
   async login(token = this.token) {
     if (!token || typeof token !== "string") throw new Error("TOKEN_INVALID");
-    this.token = token;
+    
+   this.token = token;
     this.emit(
       "debug",
       `[WS] Provided token: ${token
@@ -58,6 +59,7 @@ class Client extends BaseClient {
       await this.ws.connect(token);
       return this.token;
     } catch (error) {
+      super.destroy();
       this.ws.destroy();
       throw error;
     }
