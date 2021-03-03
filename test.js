@@ -17,4 +17,4 @@ client.on("ready", async() => {
     console.log("Ready!")
 })
 
-client.login("NzcxNDgzNzQxOTc3NzA2NTI2.X5syOQ.11660LVYNkPF3n_IPAGEPos1Qvo")
+client.login("HAHAH_CANT_GET_TOKEN")
