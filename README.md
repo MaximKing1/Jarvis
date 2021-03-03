@@ -1,6 +1,6 @@
 [![NPM](https://nodei.co/npm/jarvis.djs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/jarvis.djs/)
 
-# Jarvis.djs - JavaScript Discord Libary
+# Jarvis.djs - AI JavaScript Discord Libary
 
 # Table of Contents
 
