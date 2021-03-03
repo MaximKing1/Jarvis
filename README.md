@@ -1,25 +1,22 @@
 [![NPM](https://nodei.co/npm/jarvis.djs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/jarvis.djs/)
 
-# Jarvis.djs - AI JavaScript Discord Libary
+# Jarvis.djs - JavaScript Discord Libary
 
-# This Is Not Fully Working! Please Do Not Donwload and Complain Because This Is a Work In Progress! PR Welcomed!
+## This Is Not Fully Working! Please Do Not Donwload and Complain Because This Is a Work In Progress! PR Welcomed!
 
 # Table of Contents
 
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Events](#events)
 - [Discord Gateway](#discord-gateway)
 
 ## Requirements
-- Node.JS =>14.0.0
-- Minimum RAM => 50MB
+
+- Node.JS => 14.0.0
  
 # Installation
-
-Jarvis (Named After The Super Computer In Iron Man) is an JavaScript Discord Library! It used AI to process data such as the cache for faster and smarter operations!
-
-Node.js Version: 14.0.0 and above.
 
 ## NPM (recommended)
 
