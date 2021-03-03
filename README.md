@@ -4,14 +4,24 @@
 
 # Table of Contents
 
+- [How It Works?](#how-it-works)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Events](#events)
 - [Discord Gateway](#discord-gateway)
 
+# How It Works
+
+Jarvis uses Artificial Intelligence to dynamically allocate the resources your bot needs, Jarvis run on Node.js v14.0.0 and Above, and will soon have a interactive online dashboard with information about your bot!
+Jarvis uses a small amount of RAM due to it being built very lightly and only requires a server and a bot and your good to go!
+
+## Requirements
+- Node.JS =>14.0.0
+- Minimum RAM => 50MB
+ 
 # Installation
 
-Jarvis.djs is a JavaScript Discord Libary used for interacting with discord bots, this is very new so please feel free to contribute to help the project! To install this use either NPM or Yarn and follow the guide below.
+Jarvis (Named After The Super Computer In Iron Man) is an AI Discord Library! It used AI to process data such as the cache for faster and smarter operations!
 
 ## NPM (recommended)
 
