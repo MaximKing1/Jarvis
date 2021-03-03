@@ -13,28 +13,15 @@ class Client extends BaseClient {
      */
     this.ws = new WSManager(this);
 
-    /**
-     * Client readyAT
-     * @type {client.readyAt}
-     */
     this.readyAt = null;
-
-    /**
-     * Client user
-     * @type {client.user}
-     */
     this._user = null;
-
-    /**
-     * Client Session ID Used For Gateway Reconnections, This Will Reset After Restart.
-     * @type {api.session_id}
-     */
     this.session_id = null;
-
-    /**
-     * @type {api.seq}
-     */
     this.seq = null;
+    this.ready = false;
+    this.presence = {
+       game: null,
+       status: "offline"
+    };
 
     if (!this.token && "DISCORD_TOKEN" in process.env) {
       this.token = process.env.DISCORD_TOKEN;

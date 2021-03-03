@@ -69,7 +69,7 @@ class WSManager extends EventEmitter {
         }
           
         case 7: {
-         
+          this.reconnect();
           break;
         }
           
@@ -139,7 +139,13 @@ class WSManager extends EventEmitter {
       } else if (data == "4004") {
         console.log("[WS ERROR] Rate Limited!");
         reconnect = false;
-      }
+      } else if (data == "4013") {
+        console.log("[WS ERROR] Invalid intent(s)!");
+        reconnect = false;
+      } else if (data == "4014") {
+        console.log("[WS ERROR] Disallowed intent(s)!");
+        reconnect = false;
+      } 
       if (reconnect == true) return this.resume();
     })
   }
