@@ -76,6 +76,10 @@ class Client extends BaseClient {
   this.ws.destroy();
   this.token = null;
   }
+
+    _eval(script) {
+    return eval(script);
+  }
 }
 
 module.exports = Client;
