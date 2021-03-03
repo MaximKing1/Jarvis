@@ -43,8 +43,10 @@ class Client extends BaseClient {
   }
 
   async login(token = this.token) {
-    if (!token || typeof token !== "string") throw new Error("TOKEN_INVALID");
-    
+   if (!token || typeof token !== "string") throw new Error("TOKEN_INVALID");
+   if(this.options.compress) {
+      this.gatewayURL += "&compress=zlib-stream";
+   }
    this.token = token;
     this.emit(
       "debug",
