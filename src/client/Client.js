@@ -2,7 +2,6 @@
 
 const BaseClient = require("./BaseClient");
 const WSManager = require("./Websocket/WSManager");
-const { ClientUser } = require("./ClientUser.js");
 const os = require('os');
 
 class Client extends BaseClient {
@@ -48,7 +47,6 @@ class Client extends BaseClient {
   }
 
   async user() {
-
   return user;
   }
 

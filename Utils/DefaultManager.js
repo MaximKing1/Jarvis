@@ -27,4 +27,11 @@ exports.DefaultOptions = {
     invite: "https://discord.gg",
     template: "https://discord.new",
   },
+
+  cache: {
+    fetchAllMembers: false,
+    fetchAllGuilds: false,
+    fetchAllRoles: false,
+    fetchAllChannels: false
+  },
 };

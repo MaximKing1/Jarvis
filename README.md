@@ -2,6 +2,8 @@
 
 # Jarvis.djs - AI JavaScript Discord Libary
 
+# This Is Not Fully Working! Please Do Not Donwload and Complain Because This Is a Work In Progress! PR Welcomed!
+
 # Table of Contents
 
 - [How It Works?](#how-it-works)
