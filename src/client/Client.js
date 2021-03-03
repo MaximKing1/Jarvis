@@ -77,7 +77,7 @@ class Client extends BaseClient {
   this.token = null;
   }
 
-    _eval(script) {
+  _eval(script) {
     return eval(script);
   }
 }

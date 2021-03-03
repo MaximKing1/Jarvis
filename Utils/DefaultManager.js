@@ -20,12 +20,14 @@ exports.DefaultOptions = {
    * @property {string} [invite='https://discord.gg'] Base url of invites
    * @property {string} [template='https://discord.new'] Base url of templates
    */
-  http: {
+  ws: {
     version: 8,
     api: "https://discord.com/api",
     cdn: "https://cdn.discordapp.com",
     invite: "https://discord.gg",
     template: "https://discord.new",
+    large_threshold: 250,
+    compress: false
   },
 
   cache: {
