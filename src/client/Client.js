@@ -41,13 +41,10 @@ class Client extends BaseClient {
     return this.readyAt || null;
   }
 
-  get uptimeMS() {
-    return os.uptime();
-  }
 
-  async user() {
-  return user;
-  }
+ async user() {
+  return this._user;
+ }
 
   async login(token = this.token) {
    if (!token || typeof token !== "string") throw new Error("TOKEN_INVALID");
@@ -65,10 +62,9 @@ class Client extends BaseClient {
     this.emit("debug", "[WS] Preparing Gateway Connection...");
 
     try {
-      await this.ws.connect(token);
+      await this.ws.connect();
       return this.token;
     } catch (error) {
-      super.destroy();
       this.ws.destroy();
       throw error;
     }
