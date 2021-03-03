@@ -2,12 +2,9 @@
 
 const EventEmitter = require("events");
 const WebSocket = require("ws");
-const os = require('os');
 const { WSEvents } = require('../../constants/Constants');
 const { Gateway } = require('../../connections');
 const fetch = require('node-fetch');
-
-const UNRESUMABLE_CLOSE_CODES = [1000, 4006, 4007];
 
 class WSManager extends EventEmitter {
   constructor(client) {
@@ -18,24 +15,21 @@ class WSManager extends EventEmitter {
 
     this.status = "offline";
    }
-
-     resume() {
-        this.status = "resuming";
-        this.ws.send(GatewayOPCodes.RESUME, {
-            token: this._token,
-            session_id: this.sessionID,
-            seq: this.seq
-        });
-    }
   
   async destroy() {
     console.log("[WS] Connection Destroyed!");
     process.exit();
   }
 
-  connect() {
+ connect() {
+   this.connecting = true;
+   return this.identify();
+  }
+
+  async identify() {
     this.ws.on('open', async (open) => {
       console.log("[WS] Connected to the discord gateway...");
+      this.status = "connecting";
       this.ws.send(JSON.stringify({
         op: 2,
         d: {
@@ -75,14 +69,7 @@ class WSManager extends EventEmitter {
         }
           
         case 7: {
-          this.ws.send(JSON.stringify({
-            op: 6,
-            d: {
-              token: this.token,
-              session_id: this.session_id,
-              seq: 1337
-            }
-          }));
+         
           break;
         }
           
@@ -90,7 +77,7 @@ class WSManager extends EventEmitter {
           this.seq = 0;
           this.sessionID = null;
           this.client.emit("warn", "Invalid session, reidentifying!");
-          this.identify();
+          this.connect();
           break;
         }
           
@@ -101,7 +88,8 @@ class WSManager extends EventEmitter {
               op: 1,
               d: sequence
             }, d.d.heartbeat_interval))
-          }, d.d.hearbeat_interval)
+          }, d.d.hearbeat_interval);
+          this.lastHeartbeatSent = new Date().getTime();
           break;
         }
           
@@ -113,7 +101,7 @@ class WSManager extends EventEmitter {
       
       if (event) {
         const { d: user } = JSON.parse(message) || incoming;
-        console.log("Event Recived")
+        console.log("Event Recived");
         try {
           const { default: module } = await import(`../../events/${event}.js`);
           module(this.client, JSON.parse(message.toString()))
@@ -148,9 +136,26 @@ class WSManager extends EventEmitter {
       } else if (data == "4012") {
         console.log("[WS ERROR] Invalid API Version");
         reconnect = false;
+      } else if (data == "4004") {
+        console.log("[WS ERROR] Rate Limited!");
+        reconnect = false;
       }
+      if (reconnect == true) return this.resume();
     })
   }
+
+  resume() {
+    this.status = "resuming";
+    console.log("[WS] Reconnecting...");
+      this.ws.send(JSON.stringify({
+         op: 6,
+           d: {
+            token: this.token,
+            session_id: this.session_id,
+            seq: this.seq
+          }
+      }));
+    }
 }
 
 module.exports = WSManager;

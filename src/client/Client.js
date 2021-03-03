@@ -31,6 +31,11 @@ class Client extends BaseClient {
      */
     this.session_id = null;
 
+    /**
+     * @type {api.seq}
+     */
+    this.seq = null;
+
     if (!this.token && "DISCORD_TOKEN" in process.env) {
       this.token = process.env.DISCORD_TOKEN;
     } else {
@@ -63,7 +68,7 @@ class Client extends BaseClient {
     this.emit("debug", "[WS] Preparing Gateway Connection...");
 
     try {
-      await this.ws.connect();
+      await this.ws.connect(token);
       return this.token;
     } catch (error) {
       this.ws.destroy();
