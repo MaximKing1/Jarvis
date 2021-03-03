@@ -12,6 +12,8 @@
 
 Jarvis.djs is a JavaScript Discord Libary used for interacting with discord bots, this is very new so please feel free to contribute to help the project! To install this use either NPM or Yarn and follow the guide below.
 
+Node.js Version: 14.0.0 and above.
+
 ## NPM (recommended)
 
 ```js

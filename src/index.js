@@ -3,5 +3,5 @@
 module.exports = {
   Client: require("./client/Client"),
 
-  Message: require("./managers/Channel/MessageManager"),
+  message: require("./managers/Channel/MessageManager"),
 };
