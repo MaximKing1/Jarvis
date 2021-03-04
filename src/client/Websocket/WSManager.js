@@ -69,7 +69,7 @@ class WSManager extends EventEmitter {
 
         case 0: {
           console.log(`[WS] Event Received - (${packet})`);
-          this.WWEvent(packet);
+          this.WSEvent(packet);
           break;
         }
           
@@ -155,8 +155,7 @@ class WSManager extends EventEmitter {
     })
   }
 
-  async WWEvent(packet) {
-
+  async WSEvent(packet) {
     switch (packet.t) {
     
       case "READY": {
