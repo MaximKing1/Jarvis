@@ -61,10 +61,14 @@ class WSManager extends EventEmitter {
       const { t: event } = JSON.parse(message) || incoming;
       const sequence = d.s;
 
+      if(d.s) {
+      this.seq = d.s;
+      }
+
       switch (d.op) {
 
         case 0: {
-          console.log("[WS] Event")
+          console.log(`[WS] Event Received - (${d})`)
           break;
         }
           
