@@ -3,7 +3,7 @@ const HTTPS = require("https");
 class RequestHandler {
     constructor(client) {
         this.client = client;
-        this.baseURL = Endpoints.BASE_URL;
+        this.baseURL = "N/A";
         this.userAgent = `Jarvis.djs`;
         this.ratelimits = {};
         this.requestTimeout = client.options.requestTimeout;

@@ -57,18 +57,19 @@ class WSManager extends EventEmitter {
     });
 
     this.ws.on('message', async (message) => {
-      const d = JSON.parse(message) || incoming;
+      const packet = JSON.parse(message) || incoming;
       const { t: event } = JSON.parse(message) || incoming;
-      const sequence = d.s;
+      const sequence = packet.s;
 
-      if(d.s) {
-      this.seq = d.s;
+      if(packet.s) {
+      this.seq = packet.s;
       }
 
-      switch (d.op) {
+      switch (packet.op) {
 
         case 0: {
-          console.log(`[WS] Event Received - (${d})`)
+          console.log(`[WS] Event Received - (${packet})`);
+          this.WWEvent(packet);
           break;
         }
           
@@ -91,8 +92,8 @@ class WSManager extends EventEmitter {
             this.ws.send(JSON.stringify({
               op: 1,
               d: sequence
-            }, d.d.heartbeat_interval))
-          }, d.d.hearbeat_interval);
+            }, packet.d.heartbeat_interval))
+          }, packet.d.hearbeat_interval);
           this.lastHeartbeatSent = new Date().getTime();
           break;
         }
@@ -152,6 +153,17 @@ class WSManager extends EventEmitter {
       } 
       if (reconnect == true) return this.resume();
     })
+  }
+
+  async WWEvent(packet) {
+
+    switch (packet.t) {
+    
+      case "READY": {
+        this.client.emit("ready");
+      }
+
+    }
   }
 
   resume() {
