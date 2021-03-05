@@ -5,7 +5,7 @@
 </p>
   <p align="center">
     <a href="https://github.com/MaximKing1/Jarvis">
-      <img alt="Tests Passing" src="https://snyk-widget.herokuapp.com/badge/npm/Jarvis.djs/badge.svg" />
+      <img alt="Synk" src="https://snyk.io/test/github/MaximKing1/Jarcis/badge.svg" />
     </a>
     <a href="https://github.com/MaximKing1/Jarvis/issues">
       <img alt="Issues" src="https://img.shields.io/github/issues/MaximKing1/Jarvis?color=0088ff" />
