@@ -20,6 +20,7 @@
 
 # Table of Contents
 
+- [Support Server](https://discord.gg/NybFm5ct)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Usage](#usage)
