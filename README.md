@@ -1,6 +1,26 @@
-[![NPM](https://nodei.co/npm/jarvis.djs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/jarvis.djs/)
+<p align="center">
+ <img width="100px" src="" align="center" alt="Jarvis" />
+ <h2 align="center">Jarvis</h2>
+ <p align="center">Javascript Discord Lib For Interacting With The Discord API!</p>
+</p>
+  <p align="center">
+    <a href="https://github.com/MaximKing1/Jarvis">
+      <img alt="Tests Passing" src="" />
+    </a>
+    <a href="https://codecov.io/gh/MaximKing1/Jarvis">
+      <img src="https://codecov.io/gh/MaximKing1/Jarvis" />
+    </a>
+    <a href="https://github.com/MaximKing1/Jarvis/issues">
+      <img alt="Issues" src="https://img.shields.io/github/issues/MaximKing1/Jarvis?color=0088ff" />
+    </a>
+    <a href="https://github.com/MaximKing1/Jarvis/pulls">
+      <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/MaximKing1/Jarvis?color=0088ff" />
+    </a>
+    <br />
+    <br />
+  </p>
 
-# Jarvis.djs - JavaScript Discord Libary
+[![NPM](https://nodei.co/npm/jarvis.djs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/jarvis.djs/)
 
 ## This Is Not Fully Working! Please Do Not Donwload and Complain Because This Is a Work In Progress! PR Welcomed!
 
