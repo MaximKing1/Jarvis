@@ -55,6 +55,8 @@ class WSManager extends EventEmitter {
     });
 
    this.ws.on("ready", (u) => {
+      this.client.emit("debug", "[WS] Websockets ready received...);
+      this.status = "ready";
       this.user = u;
     });
       
