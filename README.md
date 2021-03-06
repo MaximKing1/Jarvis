@@ -14,7 +14,7 @@
       <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/MaximKing1/Jarvis?color=0088ff" />
     </a>
     <br />
-    <br />
+    <br /> 
   </p>
 
 [![NPM](https://nodei.co/npm/jarvis.djs.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/jarvis.djs/)
