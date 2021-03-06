@@ -329,10 +329,12 @@ class WSManager extends EventEmitter {
             }
          
             case "CHANNEL_RECIPIENT_ADD": {
+                this.client.emit("channelRecAdd");
                 break;
             }
          
             case "CHANNEL_RECIPIENT_REMOVE": {
+                this.client.emit("channelRecRemove");
                 break;
             }
          
@@ -347,11 +349,13 @@ class WSManager extends EventEmitter {
             }
          
             case "GUILD_MEMBERS_CHUNK": {
+                this.client.emit("guildMembersChunk");
                 this.lastHeartbeatAck = true;
                 break;
             }
          
             case "GUILD_SYNC": {
+                this.client.emit("guildSync");
                 break;
             }
          
