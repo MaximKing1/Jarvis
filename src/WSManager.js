@@ -194,7 +194,7 @@ class WSManager extends EventEmitter {
             }
          
             case "MESSAGE_CREATE": {
-              this.client.emit("message");
+              this.client.emit("message", packet.d);
                 break;
             }
          
