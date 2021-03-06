@@ -17,13 +17,6 @@ class BaseClient extends EventEmitter {
      * @type {ClientOptions}
      */
     this.options = merge(DefaultOptions, options);
-
-      /**
-     * The REST manager of the client
-     * @type {RESTManager}
-     * @private
-     */
-    this.rest = new RESTManager(this, options._tokenType);
   }
 }
 
