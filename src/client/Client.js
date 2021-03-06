@@ -41,15 +41,15 @@ class Client extends BaseClient {
     return this.readyAt || null;
   }
 
-  async manualREST(url, method, options) {
+   manualREST(url, method, options) {
     this.rest.request(url, method, options);
   }
 
- async user() {
+  user() {
   return this._user;
  }
 
-  async login(token = this.token) {
+   login(token = this.token) {
    if (!token || typeof token !== "string") throw new Error("TOKEN_INVALID");
    if(this.options.compress) {
       this.gatewayURL += "&compress=zlib-stream";
@@ -65,7 +65,7 @@ class Client extends BaseClient {
     this.emit("debug", "[WS] Preparing Gateway Connection...");
 
     try {
-      await this.ws.connect();
+      this.ws.connect();
       return this.token;
     } catch (error) {
       this.ws.destroy();
