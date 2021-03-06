@@ -2,7 +2,7 @@
 
 const EventEmitter = require("events");
 const WebSocket = require("ws");
-const { GATEWAY, GATEWAYVERSION } = require('./constants/Constants');
+const { GATEWAY, GATEWAYVERSION, WECODES } = require('./constants/Constants');
 
 class WSManager extends EventEmitter {
   constructor(client) {
@@ -158,6 +158,16 @@ class WSManager extends EventEmitter {
       } 
       if (reconnect == true) return this.resume();
     })
+  }
+
+  handshake(seq, pack) {
+      setInterval(() => {
+         this.ws.send(JSON.stringify({
+             op: 1,
+             d: seq
+           }, pack.d.heartbeat_interval))
+         }, pack.d.hearbeat_interval);
+        this.lastHeartbeatSent = new Date().getTime();
   }
 
  async WSEvent(packet) {
