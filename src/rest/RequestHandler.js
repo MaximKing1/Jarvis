@@ -5,19 +5,22 @@ class RequestHandler {
         this.client = client;
     }
 
-    request(url, method, options) {
-        const data = fetch(url, {
-        method: method,
-            headers: options.header || {
+    async request(url, method, options) {
+        await fetch(url, {
+            method: method,
+            headers: options || {
                 'Content-Type': 'application/json',
                 'authorization': `Bot ${this.client.token}`
             },
-    })
-    .then(res => res.json())
-    .then(json => console.log(json));
-     return data;
+        })
+            .then(res => res.json())
+            .then(json => {
+                this._tracer = json;
+            })
+        const trace = this._tracer;
+        return trace;
     }
-
+    
 }
 
 module.exports = RequestHandler;

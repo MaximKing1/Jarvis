@@ -17,8 +17,12 @@ const client = new discord.Client({
     }
 });
 
+client.login("TOKEN");
+
+client.fetchGuild("768189909529133056").then(res => {
+    console.log(res)
+});
+
 client.on("ready", async() => {
     console.log("Ready!")
 });
-
-client.login("TOKEN");

@@ -74,23 +74,18 @@ const client = new discord.Client({
         text: "Status Text",
         type: 0 // Types: 0 = Playing, 1 = Streaming, 2 = Listening
     },
-    cache: {
-        fetchAllMembers: false,
-        fetchAllGuilds: false,
-        fetchAllRoles: false,
-        fetchAllChannels: false
-    },
     ws: {
       large_threshold: 250,
       compress: false
     }
 });
 
+// Add This Before Anything Else
+client.login("TOKEN");
+
 client.on("ready", async() => {
     console.log("Ready!")
 });
-
-client.login("TOKEN");
 ```
 
 ### Client Methods
@@ -103,6 +98,21 @@ client.destroy(); // Will destroy the client along with the discord connection
 **Ready Timestamp:**
 ```js
 client.readyAt();
+```
+
+**Manual REST Request:**
+```js
+client.manualREST("https://discordapp.com/api/v8/gateway", "GET", {
+    'Content-Type': 'application/json',
+    'authorization': 'Bot <TOKEN>'
+});
+```
+
+**Fetch Guild:**
+```js
+client.fetchGuild("ID").then(res => {
+    console.log(res);
+});
 ```
 
 # Events

@@ -3,6 +3,7 @@
 const BaseClient = require("./BaseClient");
 const WSManager = require("../WSManager");
 const RequestHandler = require("./../rest/RequestHandler");
+const ENDPOINTS = require("../rest/endpoints");
 
 class Client extends BaseClient {
   constructor(options) {
@@ -41,8 +42,9 @@ class Client extends BaseClient {
     return this.readyAt || null;
   }
 
-   manualREST(url, method, options) {
-    this.rest.request(url, method, options);
+  async manualREST(url, method, options) {
+    const trace = await this.rest.request(url, method, options);
+    console.log(trace)
   }
 
   user() {
@@ -71,6 +73,14 @@ class Client extends BaseClient {
       this.ws.destroy();
       throw error;
     }
+  }
+
+  async fetchGuild(id) {
+    await this.rest.request(`${ENDPOINTS.MAIN}/guilds/${id}?with_counts=true`, "GET", {
+    'Content-Type': 'application/json',
+    'authorization': `Bot ${this.token}`
+});
+    return this.rest._tracer;
   }
 
   destroy() {
