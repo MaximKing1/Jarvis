@@ -355,7 +355,7 @@ class WSManager extends EventEmitter {
                     this.discordServerTrace = packet.d._trace;
                 }
 
-                this.sessionID = packet.d.session_id;
+           this.sessionID = packet.d.session_id;
 
                 packet.d.guilds.forEach((guild) => {
                     if(guild.unavailable) {
