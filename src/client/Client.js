@@ -18,10 +18,10 @@ class Client extends BaseClient {
      * The clients RequestHandler
      * @type {RequestHandler}
      */
-    this.api = new RequestHandler(this);
+    this.rest = new RequestHandler(this);
 
     this.readyAt = null;
-    this._user = null;
+    this.user = null;
     this.session_id = null;
     this.seq = null;
     this.ready = false;

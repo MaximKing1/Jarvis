@@ -1,4 +1,4 @@
-const discord = require('./src/index');
+const discord = require('../src/index');
 const client = new discord.Client({
     presence: "online",
     status: {

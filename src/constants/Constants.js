@@ -6,3 +6,6 @@ exports.WSCodes = {
   4013: 'INVALID_INTENTS',
   4014: 'DISALLOWED_INTENTS',
 };
+
+exports.GATEWAY = "wss://gateway.discord.gg";
+exports.GATEWAYVERSION = "8";
