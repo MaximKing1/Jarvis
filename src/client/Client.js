@@ -1,7 +1,7 @@
 'use strict';
 
 const BaseClient = require("./BaseClient");
-const WSManager = require("./Websocket/WSManager");
+const WSManager = require("../WSManager");
 const RequestHandler = require("./../rest/RequestHandler");
 
 class Client extends BaseClient {
@@ -41,6 +41,9 @@ class Client extends BaseClient {
     return this.readyAt || null;
   }
 
+  async manualREST(url, method, options) {
+    this.rest.request(url, method, options);
+  }
 
  async user() {
   return this._user;

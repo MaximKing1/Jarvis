@@ -3,7 +3,7 @@
 const EventEmitter = require("events");
 const { DefaultOptions } = require("../../Utils/DefaultManager");
 const merge = require("merge");
-const RESTManager = require("./Websocket/WSManager");
+const RESTManager = require("../WSManager");
 
 /**
  * The base class for all clients.

@@ -2,8 +2,7 @@
 
 const EventEmitter = require("events");
 const WebSocket = require("ws");
-const { GATEWAY, GATEWAYVERSION } = require('../../constants/Constants');
-const fetch = require('node-fetch');
+const { GATEWAY, GATEWAYVERSION } = require('./constants/Constants');
 
 class WSManager extends EventEmitter {
   constructor(client) {
