@@ -57,7 +57,7 @@ class WSManager extends EventEmitter {
     });
 
    this.ws.once("ready", (u) => {
-      this.client.emit("debug", "[WS] Websockets ready received...);
+      this.client.emit("debug", "[WS] Websockets ready received...");
       this.status = "ready";
       this.user = u;
     });
@@ -224,7 +224,7 @@ class WSManager extends EventEmitter {
             }
          
             case "MESSAGE_REACTION_REMOVE_ALL": {
-               this.client.emit("reactionBulkDeleted")(
+               this.client.emit("reactionBulkDeleted");
                 break;
             }
          
