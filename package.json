@@ -3,6 +3,7 @@
   "version": "1.1.2",
   "description": "Jarvis.djs Is a Javascript Discord Client Used For Interacting With The Discord API",
   "main": "src/index.js",
+  "types": "./typings/index.d.ts",
   "keywords": [
     "discord",
     "javascript",
@@ -27,6 +28,7 @@
     "url": "git+https://github.com/MaximKing1/Jarvis.git"
   },
   "bugs": {
+    "type": "git",
     "url": "https://github.com/MaximKing1/Jarvis/issues"
   },
   "engines": {

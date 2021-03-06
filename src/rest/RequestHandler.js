@@ -1,23 +1,24 @@
-const HTTPS = require("https");
+const fetch = require('node-fetch');
 
 class RequestHandler {
     constructor(client) {
         this.client = client;
-        this.baseURL = "N/A";
-        this.userAgent = `Jarvis.djs`;
-        this.ratelimits = {};
-        this.requestTimeout = client.options.requestTimeout;
-        this.agent = client.options.agent;
-        this.latencyRef = {
-            latency: 500,
-            offset: client.options.ratelimiterOffset,
-            raw: new Array(10).fill(500),
-            timeOffset: 0,
-            timeOffsets: new Array(10).fill(0),
-            lastTimeOffsetCheck: 0
-        };
-        this.readyQueue = [];
     }
+
+    async request(method, options) {
+        const data = await fetch(url, {
+        method: method,
+        body: JSON.stringify(body),
+            headers: options.header || {
+                'Content-Type': 'application/json',
+                'authorization': `Bot ${this.client.token}`
+            },
+    })
+    .then(res => res.json())
+    .then(json => console.log(json));
+     return data;
+    }
+
 }
 
 module.exports = RequestHandler;
