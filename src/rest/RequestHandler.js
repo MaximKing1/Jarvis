@@ -6,13 +6,17 @@ class RequestHandler {
     }
 
     async request(url, method, options) {
-        await fetch(url, {
+
+const HTTPoptions = {
             method: method,
             headers: options || {
                 'Content-Type': 'application/json',
-                'authorization': `Bot ${this.client.token}`
+                'authorization': `Bot ${this.client.token}`,
+                'X-XSS-Protection': '1'
             },
-        })
+}
+        
+        await fetch(url, HTTPoptions)
             .then(res => res.json())
             .then(json => {
                 this._tracer = json;
