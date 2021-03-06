@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 class RequestHandler {
     constructor(client) {
         this.client = client;
+        this.userAgent = `DiscordBot (https://github.com/JarvisDJS/Jarvis)`;
     }
 
     async request(url, method, options, body) {
@@ -15,7 +16,10 @@ class RequestHandler {
             headers: options || {
                 'Content-Type': 'application/json',
                 'authorization': `Bot ${this.client.token}`,
-                'X-XSS-Protection': '1'
+                'X-XSS-Protection': '1',
+                "User-Agent": this.userAgent,
+                "Accept-Encoding": "gzip,deflate",
+                "X-RateLimit-Precision": "millisecond"
             },
 }
         

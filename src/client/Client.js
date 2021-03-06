@@ -3,22 +3,15 @@
 const BaseClient = require("./BaseClient");
 const WSManager = require("../WSManager");
 const RequestHandler = require("./../rest/RequestHandler");
+const GuildManager = require("./../managers/Guild");
 const ENDPOINTS = require("../rest/endpoints");
 
 class Client extends BaseClient {
   constructor(options) {
     super(options);
 
-    /**
-     * The clients WebsocketManager
-     * @type {WebsocketManager}
-     */
+    this.GuildManager = new GuildManager(this);
     this.ws = new WSManager(this);
-
-    /**
-     * The clients RequestHandler
-     * @type {RequestHandler}
-     */
     this.rest = new RequestHandler(this);
 
     this.readyAt = null;
@@ -46,10 +39,6 @@ class Client extends BaseClient {
     const trace = await this.rest.request(url, method, options);
     console.log(trace)
   }
-
-  user() {
-  return this._user;
- }
 
    login(token = this.token) {
    if (!token || typeof token !== "string") throw new Error("TOKEN_INVALID");
@@ -79,11 +68,11 @@ class Client extends BaseClient {
     await this.rest.request(`${ENDPOINTS.MAIN}/guilds/${id}?with_counts=true`, "GET", {
     'Content-Type': 'application/json',
     'authorization': `Bot ${this.token}`
-});
+  });
     return this.rest._tracer;
   }
 
-    async createGuild(name, region, icon) {
+   async createGuild(name, region, icon) {
     await this.rest.request(`${ENDPOINTS.MAIN}/guilds`, "POST", {
     'Content-Type': 'application/json',
     'authorization': `Bot ${this.token}`
@@ -95,11 +84,11 @@ class Client extends BaseClient {
     return this.rest._tracer;
   }
 
-  destroy() {
+ destroy() {
   super.destroy();
   this.ws.destroy();
   this.token = null;
-  }
+ }
 
   _eval(script) {
     return eval(script);

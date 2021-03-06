@@ -72,6 +72,8 @@ const discord = require("jarvis.djs");
 ```js
 const discord = require('jarvis.djs');
 const client = new discord.Client({
+    guild_subscriptions: false,
+    intents: 32509,  // https://ziad87.net/intents/
     presence: "online",
     status: {
         text: "Status Text",
@@ -88,6 +90,10 @@ client.login("TOKEN");
 
 client.on("ready", async() => {
     console.log("Ready!")
+});
+
+client.on("message", async (message) => {
+    console.log(message.content);
 });
 ```
 

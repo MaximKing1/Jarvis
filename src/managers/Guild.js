@@ -1,11 +1,18 @@
+const RequestHandler = require("./../rest/RequestHandler");
+const ENDPOINTS = require("../rest/endpoints");
+
 class GuildManager {
-    constructor(guild) {
-    this._name = guild.name;
-    this._icon = guild.icon;
-    this._features = guild.features;
-    this._id = guild.id;
+  constructor() {
+
     this.members = new Map();
     this.channels = new Map();
-    }
-    
+
+    /**
+     * The clients RequestHandler
+     * @type {RequestHandler}
+     */
+    this.rest = new RequestHandler(this);
+  }
 }
+
+module.exports = GuildManager;

@@ -2,16 +2,18 @@
 
 const EventEmitter = require("events");
 const WebSocket = require("ws");
+const RequestHandler = require("./rest/RequestHandler");
+const ENDPOINTS = require("./rest/endpoints");
 const { GATEWAY, GATEWAYVERSION } = require('./constants/Constants');
 
 class WSManager extends EventEmitter {
   constructor(client) {
     super();
     this.client = client;
-
-    this.ws = new WebSocket(`${GATEWAY}/?v=${GATEWAYVERSION}&encoding=json`);
-
+    this.ws = null;
     this.status = "offline";
+
+    this.rest = new RequestHandler(this);
    }
   
   async destroy() {
@@ -21,28 +23,43 @@ class WSManager extends EventEmitter {
     this.client.token = null;
   }
 
- connect() {
+ async connect() {
+  await this.rest.request(`${ENDPOINTS.MAIN}/gateway/bot`, "GET", {
+  'Content-Type': 'application/json',
+  'authorization': `Bot ${this.client.token}`
+   }).then(res => {
+    this.gatewaybot = res;
+   });
+   console.log(`
+   Session Information:
+    Total: ${this.gatewaybot.session_start_limit.total}
+    Remaining: ${this.gatewaybot.session_start_limit.remaining}
+    Recommended Shards: ${this.gatewaybot.shards}
+`)
    this.connecting = true;
+   this.ws = new WebSocket(`${GATEWAY}/?v=${GATEWAYVERSION}&encoding=json`);
    return this.identify();
   }
 
-  async identify() {
-    this.ws.once("open", async (open) => {
-      console.log("[WS] Connected to the discord gateway...");
-      this.status = "connecting";
-      this.ws.send(JSON.stringify({
-        op: 2,
-        d: {
-          token: this.token,
-          v: 8,
-          large_threshold: this.client.options.large_threshold || 250,
-          compress: this.client.options.compress || false,
-          properties: {
-            $os: process.platform,
-            $browser: "Jarvis",
-            $device: "Jarvis"
-          },
-          presence: {
+async identify() {
+ this.ws.once("open", async (open) => {
+   if (this.ws !== null) {
+     this.client.emit("debug", "[WS] Connected to the discord gateway...");
+       this.status = "connecting";
+       this.ws.send(JSON.stringify({
+         op: 2,
+         d: {
+           token: this.client.token,
+           large_threshold: this.client.options.large_threshold || 250,
+           guild_subscriptions: this.client.options.guild_subscriptions || false,
+           compress: this.client.options.compress || false,
+           intents: this.client.options.intents || 32509, // https://ziad87.net/intents/
+           properties: {
+             $os: process.platform,
+             $browser: "Jarvis",
+             $device: "Jarvis"
+           },
+           presence: {
             activities: [{
               name: this.client.options.status.text || null,
               type: this.client.options.status.type || 0
@@ -50,14 +67,15 @@ class WSManager extends EventEmitter {
             status: this.client.options.presence || "online",
             since: Date.now(),
             afk: false
-          }
-        }
-      }));
+          },
+         },
+       }));
       this.client.readyAt = new Date();
-    });
+     }
+  });
 
-   this.ws.once("ready", (u) => {
-      this.client.emit("debug", "[WS] Websockets ready received...");
+   this.ws.on("ready", async (u) => {
+      this.client.emit("debug", "[WS] Websocket ready received...");
       this.status = "ready";
       this.user = u;
     });
@@ -65,6 +83,7 @@ class WSManager extends EventEmitter {
     this.ws.on("message", async (message) => {
       const packet = JSON.parse(message) || incoming;
       const sequence = packet.s;
+      const packetAfter = JSON.stringify(packet);
 
       if(packet.s) {
       this.seq = packet.s;
@@ -74,13 +93,12 @@ class WSManager extends EventEmitter {
 
         case 0: {
           this.WSEvent(packet);
-          console.log(`[WS] Event Received - (${packet})`);
           break;
         }
           
-          case 1: {
-           this.handshake(sequence, packet);
-           break;
+        case 1: {
+          this.handshake(sequence, packet);
+          break;
         }
               
         case 7: {
@@ -103,24 +121,24 @@ class WSManager extends EventEmitter {
               op: 1,
               d: sequence
             }, packet.d.heartbeat_interval))
-          }, packet.d.hearbeat_interval);
+          }, packet.d.heartbeat_interval);
           this.lastHeartbeatSent = new Date().getTime();
           break;
         }
           
         case 11: {
-          this.client.emit("debug", "[WS] Heartbeat Recived");
+          this.client.emit("debug", "[WS] Heartbeat Received");
           break;
         }
       }
    });
     
     this.ws.on("ping", async (data) => {
-    this.client.emit("ping", data);
+    this.client.emit("debug", data);
     });
 
     this.ws.on("error", (data) => {
-      this.client.emit("error", data);
+    this.client.emit("error", data);
     });
     
     this.ws.once("close", async (data) => {
@@ -131,19 +149,19 @@ class WSManager extends EventEmitter {
         console.log("[WS ERROR] Rate Limited!");
         reconnect = false;
         } else if (data == "4003") {
-        this.client.emit("invaild", "[WS] Invild Token");
+        this.client.emit("invalid", "[WS] Invalid Token");
         console.log("[WS ERROR] Invalid token!");
         reconnect = false;
         } else if (data == "4011") {
-        this.client.emit("invaild", "[WS] Sharding required to connect to discord");
+        this.client.emit("invalid", "[WS] Sharding required to connect to discord");
         console.log("[WS ERROR] Sharding required to connect to discord");
         reconnect = false;
         } else if (data == "4009") {
-        this.client.emit("invaild", "[WS] Session timed out");
+        this.client.emit("invalid", "[WS] Session timed out");
         console.log("[WS ERROR] Session timed out");
         reconnect = true;
         } else if (data == "4000") {
-        this.client.emit("invaild", "[WS] Unknown error");
+        this.client.emit("invalid", "[WS] Unknown error");
         console.log("[WS ERROR] Unknown error");
         reconnect = true;
         } else if (data == "4012") {
@@ -151,7 +169,7 @@ class WSManager extends EventEmitter {
         console.log("[WS ERROR] Invalid API Version");
         reconnect = false;
         } else if (data == "4004") {
-        this.client.emit("invaild", "The token is incorrect.");
+        this.client.emit("invalid", "The token is incorrect.");
         console.log("[WS ERROR] Invalid Token Provided!");
         reconnect = false;
         } else if (data == "4013") {
@@ -167,6 +185,19 @@ class WSManager extends EventEmitter {
     })
   }
 
+  resume() {
+    this.status = "resuming";
+    console.log("[WS] Reconnecting...");
+      this.ws.send(JSON.stringify({
+         op: 6,
+           d: {
+            token: this.token,
+            session_id: this.sessionID,
+            seq: this.seq
+          }
+      }));
+    }
+  
   handshake(seq, pack) {
          this.ws.send(JSON.stringify({
              op: 1,
@@ -175,7 +206,7 @@ class WSManager extends EventEmitter {
         this.lastHeartbeatSent = new Date().getTime();
   }
 
- async WSEvent(packet) {
+ WSEvent(packet) {
    switch (packet.t) {
     
        case "PRESENCE_UPDATE": {
@@ -364,9 +395,10 @@ class WSManager extends EventEmitter {
             }
          
             case "READY": {
-           
-               this.emit("ready", packet.d.user);
-           
+                
+                this.client.emit("ready", packet.d.user);
+                this.client.user = packet.d.user;
+
                 this.is_ready = true;
 
                 this.connectAttempts = 0;
@@ -376,8 +408,6 @@ class WSManager extends EventEmitter {
            
                 this.connectTimeout = null;
                 this.status = "ready";
-                this.presence.status = "online";
-                this.client.shards._readyPacketCB();
 
                 if(packet.t === "RESUMED") {
                     this.resume();
@@ -389,74 +419,11 @@ class WSManager extends EventEmitter {
                     break;
                 }
 
-                if(this.client.user.bot) {
-                    this.client.bot = true;
-                    if(!this.client.token.startsWith("Bot ")) {
-                        this.client.token = "Bot " + this.client.token;
-                    }
-                } else {
-                    this.client.bot = false;
-                    this.client.userGuildSettings = {};
-                    packet.d.user_guild_settings.forEach((guildSettings) => {
-                        this.client.userGuildSettings[guildSettings.guild_id] = guildSettings;
-                    });
-                    this.client.userSettings = packet.d.user_settings;
-                }
-
-                if(packet.d._trace) {
-                    this.discordServerTrace = packet.d._trace;
-                }
-
               this.sessionID = packet.d.session_id;
-
-                packet.d.guilds.forEach((guild) => {
-                    if(guild.unavailable) {
-                        this.client.guilds.remove(guild);
-                        this.client.unavailableGuilds.add(guild, this.client, true);
-                    } else {
-                        this.client.unavailableGuilds.remove(this.createGuild(guild));
-                    }
-                });
-
-                packet.d.private_channels.forEach((channel) => {
-                    if(channel.type === undefined || channel.type === ChannelTypes.DM) {
-                        this.client.privateChannelMap[channel.recipients[0].id] = channel.id;
-                        this.client.privateChannels.add(channel, this.client, true);
-                    } else if(channel.type === ChannelTypes.GROUP_DM) {
-                        this.client.groupChannels.add(channel, this.client, true);
-                    } else {
-                        this.client.emit("warn", new Error("Unhandled READY private_channel type: " + JSON.stringify(channel, null, 2)));
-                    }
-                });
-
-                if(packet.d.relationships) {
-                    packet.d.relationships.forEach((relationship) => {
-                        this.client.relationships.add(relationship, this.client, true);
-                    });
-                }
-
-                if(packet.d.presences) {
-                    packet.d.presences.forEach((presence) => {
-                        if(this.client.relationships.get(presence.user.id)) { // Avoid DM channel presences which are also in here
-                            presence.id = presence.user.id;
-                            this.client.relationships.update(presence, null, true);
-                        }
-                    });
-                }
-
-                if(packet.d.notes) {
-                    this.client.notes = packet.d.notes;
-                }
 
                 this.preReady = true;
 
                 this.client.emit("shardPreReady", this.id);
-
-                if(this.client.unavailableGuilds.size > 0 && packet.d.guilds.length > 0) {
-                    this.restartGuildCreateTimeout();
-                } else {
-                    this.checkReady();
-                }
 
                 break;
              }
@@ -542,19 +509,6 @@ class WSManager extends EventEmitter {
          
      }
   }
-
-  resume() {
-    this.status = "resuming";
-    console.log("[WS] Reconnecting...");
-      this.ws.send(JSON.stringify({
-         op: 6,
-           d: {
-            token: this.token,
-            session_id: this.sessionID,
-            seq: this.seq
-          }
-      }));
-    }
 }
 
 module.exports = WSManager;
