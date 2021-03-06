@@ -1,6 +1,6 @@
 {
   "name": "jarvis.djs",
-  "version": "1.1.2",
+  "version": "1.1.4",
   "description": "Jarvis.djs Is a Javascript Discord Client Used For Interacting With The Discord API",
   "main": "src/index.js",
   "types": "./typings/index.d.ts",

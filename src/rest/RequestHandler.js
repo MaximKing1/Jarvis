@@ -5,10 +5,11 @@ class RequestHandler {
         this.client = client;
     }
 
-    async request(url, method, options) {
+    async request(url, method, options, body) {
 
-const HTTPoptions = {
+        const HTTPoptions = {
             method: method,
+            body: JSON.stringify(body) || null,
             headers: options || {
                 'Content-Type': 'application/json',
                 'authorization': `Bot ${this.client.token}`,

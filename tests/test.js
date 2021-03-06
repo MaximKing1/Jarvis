@@ -19,7 +19,7 @@ const client = new discord.Client({
 
 client.login("TOKEN");
 
-client.fetchGuild("768189909529133056").then(res => {
+client.createGuild("TESTING").then(res => {
     console.log(res)
 });
 
