@@ -55,6 +55,10 @@ class WSManager extends EventEmitter {
       this.client.readyAt = new Date();
     });
 
+   this.ws.on("ready", (u) => {
+      this.user = u;
+    });
+      
     this.ws.on('message', async (message) => {
       const packet = JSON.parse(message) || incoming;
       const sequence = packet.s;
@@ -313,7 +317,8 @@ class WSManager extends EventEmitter {
          
             case "READY": {
            
-                this.emit("ready", message.d.user);
+               this.emit("ready", message.d.user);
+           
                 this.is_ready = true;
                 this._sessionId = message.d.session_id;
            
@@ -355,7 +360,7 @@ class WSManager extends EventEmitter {
                     this.discordServerTrace = packet.d._trace;
                 }
 
-           this.sessionID = packet.d.session_id;
+              this.sessionID = packet.d.session_id;
 
                 packet.d.guilds.forEach((guild) => {
                     if(guild.unavailable) {

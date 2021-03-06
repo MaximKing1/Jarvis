@@ -5,7 +5,7 @@ class RequestHandler {
         this.client = client;
     }
 
-    async request(method, options) {
+    async request(method, options, url) {
         const data = await fetch(url, {
         method: method,
         body: JSON.stringify(body),

@@ -1,0 +1,1 @@
+module.exports.MAIN = "https://discordapp.com/api/v8";
