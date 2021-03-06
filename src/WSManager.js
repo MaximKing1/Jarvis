@@ -2,7 +2,7 @@
 
 const EventEmitter = require("events");
 const WebSocket = require("ws");
-const { GATEWAY, GATEWAYVERSION, WECODES } = require('./constants/Constants');
+const { GATEWAY, GATEWAYVERSION } = require('./constants/Constants');
 
 class WSManager extends EventEmitter {
   constructor(client) {
@@ -16,7 +16,9 @@ class WSManager extends EventEmitter {
   
   async destroy() {
     console.log("[WS] Connection Destroyed!");
-    process.exit();
+    super.destroy();
+    this.client.destroy();
+    this.client.token = null;
   }
 
  connect() {
@@ -33,8 +35,8 @@ class WSManager extends EventEmitter {
         d: {
           token: this.token,
           v: 8,
-          large_threshold: this.client.options.large_threshold,
-          compress: this.client.options.compress,
+          large_threshold: this.client.options.large_threshold || 250,
+          compress: this.client.options.compress || false,
           properties: {
             $os: process.platform,
             $browser: "Jarvis",
@@ -42,10 +44,10 @@ class WSManager extends EventEmitter {
           },
           presence: {
             activities: [{
-              name: this.client.options.status.text,
-              type: this.client.options.status.type
+              name: this.client.options.status.text || null,
+              type: this.client.options.status.type || 0
             }],
-            status: this.client.options.presence,
+            status: this.client.options.presence || "online",
             since: Date.now(),
             afk: false
           }
