@@ -27,7 +27,7 @@ class WSManager extends EventEmitter {
   }
 
   async identify() {
-    this.ws.on('open', async (open) => {
+    this.ws.once("open", async (open) => {
       console.log("[WS] Connected to the discord gateway...");
       this.status = "connecting";
       this.ws.send(JSON.stringify({
@@ -56,13 +56,13 @@ class WSManager extends EventEmitter {
       this.client.readyAt = new Date();
     });
 
-   this.ws.on("ready", (u) => {
+   this.ws.once("ready", (u) => {
       this.client.emit("debug", "[WS] Websockets ready received...);
       this.status = "ready";
       this.user = u;
     });
       
-    this.ws.on('message', async (message) => {
+    this.ws.on("message", async (message) => {
       const packet = JSON.parse(message) || incoming;
       const sequence = packet.s;
 
@@ -79,7 +79,8 @@ class WSManager extends EventEmitter {
         }
           
           case 1: {
-              
+           this.handshake(sequence, packet);
+           break;
         }
               
         case 7: {
@@ -114,11 +115,15 @@ class WSManager extends EventEmitter {
       }
    });
     
-    this.ws.on("error", async (data) => {
+    this.ws.on("ping", async (data) => {
+    this.client.emit("ping", data);
+    });
+
+    this.ws.on("error", (data) => {
       this.client.emit("error", data);
     });
     
-    this.ws.on("close", async (data) => {
+    this.ws.once("close", async (data) => {
       let reconnect;
         console.log(`[WS] Connection died (Code: ${data})`);
         if (data == "4008") {
@@ -163,12 +168,10 @@ class WSManager extends EventEmitter {
   }
 
   handshake(seq, pack) {
-      setInterval(() => {
          this.ws.send(JSON.stringify({
              op: 1,
              d: seq
            }, pack.d.heartbeat_interval))
-         }, pack.d.hearbeat_interval);
         this.lastHeartbeatSent = new Date().getTime();
   }
 
@@ -176,67 +179,82 @@ class WSManager extends EventEmitter {
    switch (packet.t) {
     
        case "PRESENCE_UPDATE": {
-           this.client.emit("presenceUpdate")
+           this.client.emit("presenceUpdate");
                 break;
             }
          
             case "VOICE_STATE_UPDATE": {
+             this.client.emit("voiceStateUpdated");
                 break;
             }
          
             case "TYPING_START": {
+              this.client.emit("typingStarted");
                 break;
             }
          
             case "MESSAGE_CREATE": {
+              this.client.emit("message");
                 break;
             }
          
             case "MESSAGE_UPDATE": {
+              this.client.emit("messageUpdate");
                 break;
             }
          
             case "MESSAGE_DELETE": {
+              this.client.emit("messageDeleted");
                 break;
             }
          
             case "MESSAGE_DELETE_BULK": {
+              this.client.emit("messageBulkDeleted");
                 break;
             }
          
             case "MESSAGE_REACTION_ADD": {
+              this.client.emit("reactionAdded");
                 break;
             }
          
             case "MESSAGE_REACTION_REMOVE": {
+              this.client.emit("reactionRemoved");
                 break;
             }
          
             case "MESSAGE_REACTION_REMOVE_ALL": {
+               this.client.emit("reactionBulkDeleted")(
                 break;
             }
          
             case "MESSAGE_REACTION_REMOVE_EMOJI": {
+               // Need to check this
                 break;
             }
          
             case "GUILD_MEMBER_ADD": {
+               this.client.emit("memberAdded");
                 break;
             }
          
             case "GUILD_MEMBER_UPDATE": {
+              this.client.emit("memberUpdated");
                 break;
             }
          
             case "GUILD_MEMBER_REMOVE": {
+              this.client.emit("memberRemoved");
                 break;
             }
          
             case "GUILD_CREATE": {
+               this.client.emit("guildCreate", { id: packet.d.id });
                 break;
             }
          
             case "GUILD_UPDATE": {
+             this.client.emit("guildUpdated", { id: packet.d.id });
                 break;
             }
          
@@ -246,54 +264,67 @@ class WSManager extends EventEmitter {
             }
          
             case "GUILD_BAN_ADD": {
+              this.client.emit("guildBanAdd");
                 break;
             }
          
             case "GUILD_BAN_REMOVE": {
+             this.client.emit("guildBanRemoved");
                 break;
             }
 
             case "GUILD_ROLE_CREATE": {
+              this.client.emit("guildRoleCreated");
                 break;
             }
          
             case "GUILD_ROLE_UPDATE": {
+              this.client.emit("guildRoleUpdated");
                 break;
             }
          
             case "GUILD_ROLE_DELETE": {
+              this.client.emit("guildRoleDeleted");
                break;
             }
          
             case "INVITE_CREATE": {
+              this.client.emit("inviteCreated");
                 break;
             }
          
             case "INVITE_DELETE": {
+             this.client.emit("inviteDeleted");
                 break;
             }
          
             case "CHANNEL_CREATE": {
+             this.client.emit("channelCreated");
                 break;
             }
          
             case "CHANNEL_UPDATE": {
+              this.client.emit("channelUpdated");
                 break;
             }
          
             case "CHANNEL_DELETE": {
+              this.client.emit("channelDeleted");
                 break;
             }
          
             case "CALL_CREATE": {
+            
                 break;
             }
          
             case "CALL_UPDATE": {
+
                 break;
             }
          
             case "CALL_DELETE": {
+
                 break;
             }
          
@@ -330,11 +361,10 @@ class WSManager extends EventEmitter {
          
             case "READY": {
            
-               this.emit("ready", message.d.user);
+               this.emit("ready", packet.d.user);
            
                 this.is_ready = true;
-                this._sessionId = message.d.session_id;
-           
+
                 this.connectAttempts = 0;
                 this.reconnectInterval = 1000;
 
@@ -484,15 +514,17 @@ class WSManager extends EventEmitter {
             }
            
             case "MESSAGE_ACK": {
-           this.client.emit("ignored", packet);
+              this.client.emit("ignored", packet);
+              break;
             }
            
             case "GUILD_INTEGRATIONS_UPDATE": {
            this.client.emit("guildIntergrationUpdated", packet);
+              break;
             }
            
             case "USER_SETTINGS_UPDATE": {
-           
+             break;
             }
            
             case "CHANNEL_PINS_ACK": {
