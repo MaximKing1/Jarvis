@@ -73,16 +73,8 @@ class Client extends EventEmitter {
     }
   }
 
-  async fetchGuild(id) {
-    await this.rest.request(
-      `${ENDPOINTS.MAIN}/guilds/${id}?with_counts=true`,
-      'GET',
-      {
-        'Content-Type': 'application/json',
-        authorization: `Bot ${this.token}`,
-      }
-    );
-    return this.rest._tracer;
+  fetchGuild(id) {
+    return this.GuildManager.fetchGuild(id);
   }
 
   destroy() {

@@ -13,6 +13,8 @@ const client = new discord.Client({
 
 client.login('TOKEN');
 
+client.fetchGuild('768189909529133056');
+
 client.on('ready', async (user) => {
   console.log(user);
 });

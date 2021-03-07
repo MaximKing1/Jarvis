@@ -1,10 +1,17 @@
 'use strict';
 
-const EventEmitter = require('events');
 const WebSocket = require('ws');
 const RequestHandler = require('./rest/RequestHandler');
+const ZlibSync = require('zlib-sync');
 const ENDPOINTS = require('./rest/endpoints');
 const { GATEWAY, GATEWAYVERSION } = require('./constants/Constants');
+
+let EventEmitter;
+try {
+  EventEmitter = require('eventemitter3');
+} catch (err) {
+  EventEmitter = require('events');
+}
 
 class WSManager extends EventEmitter {
   constructor(client) {
@@ -24,27 +31,26 @@ class WSManager extends EventEmitter {
   }
 
   async connect() {
-    await this.rest
-      .request(`${ENDPOINTS.MAIN}/gateway/bot`, 'GET', {
+    const gatewaybot = await this.rest.request(
+      `${ENDPOINTS.MAIN}/gateway/bot`,
+      'GET',
+      {
         'Content-Type': 'application/json',
         authorization: `Bot ${this.client.token}`,
-      })
-      .then((res) => {
-        this.gatewaybot = res;
-      });
-    this.sessionLimit();
+      }
+    );
+    // .then((res) => {
+    //   this.gatewaybot = res;
+    // });
+    console.log(`
+     Session Information:
+      Total: ${gatewaybot.session_start_limit.total}
+      Remaining: ${gatewaybot.session_start_limit.remaining}
+      Recommended Shards: ${gatewaybot.shards}
+      `);
     this.connecting = true;
     this.ws = new WebSocket(`${GATEWAY}/?v=${GATEWAYVERSION}&encoding=json`);
     return this.identify();
-  }
-
-  sessionLimit() {
-    console.log(`
-   Session Information:
-    Total: ${this.gatewaybot.session_start_limit.total || 'Error'}
-    Remaining: ${this.gatewaybot.session_start_limit.remaining || 'Error'}
-    Recommended Shards: ${this.gatewaybot.shards}
-    `);
   }
 
   async identify() {
@@ -94,7 +100,6 @@ class WSManager extends EventEmitter {
     this.ws.on('message', async (message) => {
       const packet = JSON.parse(message) || incoming;
       const sequence = packet.s;
-      const packetAfter = JSON.stringify(packet);
 
       if (packet.s) {
         this.seq = packet.s;
@@ -233,6 +238,7 @@ class WSManager extends EventEmitter {
 
   WSEvent(packet) {
     this.client.emit('allEvents', packet.d);
+
     switch (packet.t) {
       case 'PRESENCE_UPDATE': {
         this.client.emit('presenceUpdate');
@@ -541,6 +547,16 @@ class WSManager extends EventEmitter {
         break;
       }
     }
+  }
+
+  decompressGatewayMessage(message) {
+    const inflate = new ZlibSync.Inflate();
+    inflate.push(message, ZlibSync.Z_SYNC_FLUSH);
+
+    if (inflate.err < 0) {
+      throw new Error('Zlib error has occured ' + inflate.msg);
+    }
+    return JSON.parse(inflate.toString());
   }
 }
 
