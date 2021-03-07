@@ -2,7 +2,6 @@
 
 class SlashCommands {
   constructor(client) {
-    super();
     this.client = client;
   }
 

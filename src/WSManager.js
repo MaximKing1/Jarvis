@@ -32,15 +32,19 @@ class WSManager extends EventEmitter {
       .then((res) => {
         this.gatewaybot = res;
       });
-    console.log(`
-   Session Information:
-    Total: ${this.gatewaybot.session_start_limit.total}
-    Remaining: ${this.gatewaybot.session_start_limit.remaining}
-    Recommended Shards: ${this.gatewaybot.shards}
-`);
+    this.sessionLimit();
     this.connecting = true;
     this.ws = new WebSocket(`${GATEWAY}/?v=${GATEWAYVERSION}&encoding=json`);
     return this.identify();
+  }
+
+  sessionLimit() {
+    console.log(`
+   Session Information:
+    Total: ${this.gatewaybot.session_start_limit.total || 'Error'}
+    Remaining: ${this.gatewaybot.session_start_limit.remaining || 'Error'}
+    Recommended Shards: ${this.gatewaybot.shards}
+    `);
   }
 
   async identify() {

@@ -9,22 +9,26 @@ exports.DefaultOptions = {
   retryLimit: 1,
   restTimeOffset: 500,
   restSweepInterval: 60,
-  presence: {},
+  presence: 'online',
+  status: {
+    text: null,
+    type: 0, // Types: 0 = Playing, 1 = Streaming, 2 = Listening
+  },
 
   ws: {
     version: 8,
-    api: "https://discord.com/api",
-    cdn: "https://cdn.discordapp.com",
-    invite: "https://discord.gg",
-    template: "https://discord.new",
+    api: 'https://discord.com/api',
+    cdn: 'https://cdn.discordapp.com',
+    invite: 'https://discord.gg',
+    template: 'https://discord.new',
     large_threshold: 250,
-    compress: false
+    compress: false,
   },
 
   cache: {
     fetchAllMembers: false,
     fetchAllGuilds: false,
     fetchAllRoles: false,
-    fetchAllChannels: false
+    fetchAllChannels: false,
   },
 };
