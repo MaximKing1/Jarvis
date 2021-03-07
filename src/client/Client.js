@@ -1,15 +1,26 @@
 'use strict';
 
-const BaseClient = require('./BaseClient');
 const ENDPOINTS = require('../rest/endpoints');
+
+const { DefaultOptions } = require('../../Utils/DefaultManager');
+const merge = require('merge');
 
 const WSManager = require('../WSManager');
 const RequestHandler = require('./../rest/RequestHandler');
 const GuildManager = require('./../managers/Guild');
 
-class Client extends BaseClient {
-  constructor(options) {
-    super(options);
+let EventEmitter;
+try {
+  EventEmitter = require('eventemitter3');
+} catch (err) {
+  EventEmitter = require('events');
+}
+
+class Client extends EventEmitter {
+  constructor(options = {}) {
+    super();
+
+    this.options = merge(DefaultOptions, options);
 
     this.GuildManager = new GuildManager(this);
     this.ws = new WSManager(this);
@@ -43,9 +54,6 @@ class Client extends BaseClient {
 
   login(token = this.token) {
     if (!token || typeof token !== 'string') throw new Error('TOKEN_INVALID');
-    if (this.options.compress) {
-      this.gatewayURL += '&compress=zlib-stream';
-    }
     this.token = token;
     this.emit(
       'debug',

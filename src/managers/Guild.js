@@ -1,5 +1,4 @@
 const RequestHandler = require("./../rest/RequestHandler");
-const ENDPOINTS = require("../rest/endpoints");
 
 class GuildManager {
   constructor() {

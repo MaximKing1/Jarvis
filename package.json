@@ -39,9 +39,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "bufferutil": "^4.0.3",
-    "events": "^3.3.0",
+    "eventemitter3": "^3.3.0",
     "merge": "^2.1.1",
     "node-fetch": "^2.6.1",
     "ws": "^7.4.3"
-  }
+  },
+ "optionalPeerDependencies": {
+  "events": "^3.3.0"
+ }
 }

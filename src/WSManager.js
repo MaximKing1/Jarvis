@@ -228,6 +228,7 @@ class WSManager extends EventEmitter {
   }
 
   WSEvent(packet) {
+    this.client.emit('allEvents', packet.d);
     switch (packet.t) {
       case 'PRESENCE_UPDATE': {
         this.client.emit('presenceUpdate');
@@ -460,6 +461,7 @@ class WSManager extends EventEmitter {
       }
 
       case 'USER_UPDATE': {
+        this.client.emit('clientUserUpdated', packet.d);
         break;
       }
 

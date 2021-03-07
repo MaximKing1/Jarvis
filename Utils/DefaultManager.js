@@ -11,15 +11,6 @@ exports.DefaultOptions = {
   restSweepInterval: 60,
   presence: {},
 
-  /**
-   * HTTP options
-   * @typedef {Object} HTTPOptions
-   * @property {number} [version=8] API version to use
-   * @property {string} [api='https://discord.com/api'] Base url of the API
-   * @property {string} [cdn='https://cdn.discordapp.com'] Base url of the CDN
-   * @property {string} [invite='https://discord.gg'] Base url of invites
-   * @property {string} [template='https://discord.new'] Base url of templates
-   */
   ws: {
     version: 8,
     api: "https://discord.com/api",
