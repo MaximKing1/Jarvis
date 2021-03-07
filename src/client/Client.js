@@ -72,17 +72,7 @@ class Client extends BaseClient {
     return this.rest._tracer;
   }
 
-   async createGuild(name, region, icon) {
-    await this.rest.request(`${ENDPOINTS.MAIN}/guilds`, "POST", {
-    'Content-Type': 'application/json',
-    'authorization': `Bot ${this.token}`
-    }, {
-      'name': name,
-      'region': region,
-      'icon': icon
-    });
-    return this.rest._tracer;
-  }
+
 
  destroy() {
   super.destroy();
