@@ -39,9 +39,7 @@ class WSManager extends EventEmitter {
         authorization: `Bot ${this.client.token}`,
       }
     );
-    // .then((res) => {
-    //   this.gatewaybot = res;
-    // });
+
     console.log(`
      Session Information:
       Total: ${gatewaybot.session_start_limit.total}
@@ -113,11 +111,13 @@ class WSManager extends EventEmitter {
 
         case 1: {
           this.handshake(sequence, packet);
+          this.client.emit("handshake", "[WS] Handshake");
           break;
         }
 
         case 7: {
           this.reconnect();
+           this.client.emit("debug", "[WS] EVENT CODE 7 - Reconnecting!");
           break;
         }
 
