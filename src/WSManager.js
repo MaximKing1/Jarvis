@@ -19,6 +19,7 @@ class WSManager extends EventEmitter {
     this.client = client;
     this.ws = null;
     this.status = 'offline';
+    this.id = "1";
 
     this.rest = new RequestHandler(this);
   }
@@ -28,6 +29,7 @@ class WSManager extends EventEmitter {
     super.destroy();
     this.client.destroy();
     this.client.token = null;
+    this.id = null;
   }
 
   async connect() {
@@ -376,14 +378,17 @@ class WSManager extends EventEmitter {
       }
 
       case 'CALL_CREATE': {
+        this.client.emit("callCreate", packet.d);
         break;
       }
 
       case 'CALL_UPDATE': {
+        this.client.emit("callUpdate", packet.d);
         break;
       }
 
       case 'CALL_DELETE': {
+        this.client.emit("callDelete", packet.d);
         break;
       }
 
@@ -432,6 +437,7 @@ class WSManager extends EventEmitter {
       case 'READY': {
         this.client.emit('ready', packet.d.user);
         this.client.user = packet.d.user;
+        this.user = packet.d.user;
 
         this.is_ready = true;
 
@@ -450,6 +456,8 @@ class WSManager extends EventEmitter {
           this.ready = true;
 
           super.emit('resume');
+          this.client.emit("shardResumed");
+
           break;
         }
 
