@@ -225,6 +225,10 @@ class WSManager extends EventEmitter {
     );
   }
 
+  updatePresence(status, options={}) {
+  // Update Status Here
+  }
+
   handshake(seq, pack) {
     this.ws.send(
       JSON.stringify(
