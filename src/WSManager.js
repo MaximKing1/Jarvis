@@ -26,8 +26,11 @@ class WSManager extends EventEmitter {
 
   async destroy() {
     console.log('[WS] Connection Destroyed!');
+    this.client.emit("debug", "[WS] Connection Manually Destroyed!");
+
     super.destroy();
     this.client.destroy();
+
     this.client.token = null;
     this.id = null;
   }
@@ -48,6 +51,7 @@ class WSManager extends EventEmitter {
       Remaining: ${gatewaybot.session_start_limit.remaining}
       Recommended Shards: ${gatewaybot.shards}
       `);
+
     this.connecting = true;
     this.ws = new WebSocket(`${GATEWAY}/?v=${GATEWAYVERSION}&encoding=json`);
     return this.identify();
@@ -56,8 +60,10 @@ class WSManager extends EventEmitter {
   async identify() {
     this.ws.once('open', async (open) => {
       if (this.ws !== null) {
+
         this.client.emit('debug', '[WS] Connected to the discord gateway...');
         this.status = 'connecting';
+
         this.ws.send(
           JSON.stringify({
             op: 2,
@@ -87,14 +93,16 @@ class WSManager extends EventEmitter {
             },
           })
         );
+
         this.client.readyAt = new Date();
       }
     });
 
-    this.ws.on('ready', async (u) => {
+    this.ws.on('ready', (u) => {
       this.client.emit('debug', '[WS] Websocket ready received...');
       this.status = 'ready';
       this.user = u;
+      this.client.user = u;
     });
 
     this.ws.on('message', async (message) => {
@@ -133,6 +141,7 @@ class WSManager extends EventEmitter {
 
         case 10: {
           this.status = 'handshaking';
+
           setInterval(() => {
             this.ws.send(
               JSON.stringify(
@@ -144,7 +153,9 @@ class WSManager extends EventEmitter {
               )
             );
           }, packet.d.heartbeat_interval);
+
           this.lastHeartbeatSent = new Date().getTime();
+
           break;
         }
 
@@ -155,7 +166,7 @@ class WSManager extends EventEmitter {
       }
     });
 
-    this.ws.on('ping', async (data) => {
+    this.ws.on('ping', (data) => {
       this.client.emit('debug', data);
     });
 
@@ -166,6 +177,7 @@ class WSManager extends EventEmitter {
     this.ws.once('close', async (data) => {
       let reconnect;
       console.log(`[WS] Connection died (Code: ${data})`);
+
       if (data == '4008') {
         this.client.emit('rateLimited', data);
         console.log('[WS ERROR] Rate Limited!');
@@ -206,6 +218,7 @@ class WSManager extends EventEmitter {
         console.log('[WS ERROR] Disallowed intent(s)!');
         reconnect = false;
       }
+
       if (reconnect == true) return this.resume();
     });
   }
@@ -213,6 +226,8 @@ class WSManager extends EventEmitter {
   resume() {
     this.status = 'resuming';
     console.log('[WS] Reconnecting...');
+    this.client.emit("debug", "[WS] Retrying gateway connection...");
+
     this.ws.send(
       JSON.stringify({
         op: 6,
@@ -239,6 +254,7 @@ class WSManager extends EventEmitter {
         pack.d.heartbeat_interval
       )
     );
+
     this.lastHeartbeatSent = new Date().getTime();
   }
 
