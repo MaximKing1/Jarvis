@@ -10,6 +10,7 @@
     <a href="https://github.com/MaximKing1/Jarvis/issues">
       <img alt="Issues" src="https://img.shields.io/github/issues/MaximKing1/Jarvis?color=0088ff" />
     </a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2FJarvisDJS%2FJarvis?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2FJarvisDJS%2FJarvis.svg?type=shield"/></a>
     <a href="https://github.com/MaximKing1/Jarvis/pulls">
       <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/MaximKing1/Jarvis?color=0088ff" />
     </a>
@@ -142,3 +143,7 @@ error - When There Is An Error
 
 # Discord Gateway
 This is the connection between the client and discord api servers.
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FJarvisDJS%2FJarvis.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FJarvisDJS%2FJarvis?ref=badge_large)
