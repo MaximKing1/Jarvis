@@ -20,6 +20,7 @@ class WSManager extends EventEmitter {
     this.ws = null;
     this.status = 'offline';
     this.id = "1";
+    this.emit = this.client.emit;
 
     this.rest = new RequestHandler(this);
   }
