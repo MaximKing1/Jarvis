@@ -383,17 +383,17 @@ class WSManager extends EventEmitter {
       }
 
       case 'CHANNEL_CREATE': {
-        this.client.emit('channelCreated');
+        this.client.emit('channelCreated', { guildID: packet.d.guild_id, channel: packet.d });
         break;
       }
 
       case 'CHANNEL_UPDATE': {
-        this.client.emit('channelUpdated');
+        this.client.emit('channelUpdated', { guildID: packet.d.guild_id, channel: packet.d });
         break;
       }
 
       case 'CHANNEL_DELETE': {
-        this.client.emit('channelDeleted');
+        this.client.emit('channelDeleted', { guildID: packet.d.guild_id, channel: packet.d });
         break;
       }
 
