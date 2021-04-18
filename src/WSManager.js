@@ -234,7 +234,7 @@ class WSManager extends EventEmitter {
         d: {
           token: this.token,
           session_id: this.sessionID,
-          seq: this.seq,
+          seq: this.seq
         },
       })
     );
@@ -333,17 +333,17 @@ class WSManager extends EventEmitter {
       }
 
       case 'GUILD_CREATE': {
-        this.client.emit('guildCreate', { id: packet.d.id });
+        this.client.emit('guildCreate', { guild: packet.d });
         break;
       }
 
       case 'GUILD_UPDATE': {
-        this.client.emit('guildUpdated', { id: packet.d.id });
+        this.client.emit('guildUpdated', { guild: packet.d });
         break;
       }
 
       case 'GUILD_DELETE': {
-        this.client.emit('guildDelete', { id: packet.d.id });
+        this.client.emit('guildDelete', { guild: packet.d });
         break;
       }
 
@@ -383,17 +383,17 @@ class WSManager extends EventEmitter {
       }
 
       case 'CHANNEL_CREATE': {
-        this.client.emit('channelCreated');
+        this.client.emit('channelCreated', { channel: packet.d });
         break;
       }
 
       case 'CHANNEL_UPDATE': {
-        this.client.emit('channelUpdated');
+        this.client.emit('channelUpdated', { channel: packet.d });
         break;
       }
 
       case 'CHANNEL_DELETE': {
-        this.client.emit('channelDeleted');
+        this.client.emit('channelDeleted', { channel: packet.d });
         break;
       }
 
