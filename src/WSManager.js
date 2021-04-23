@@ -112,6 +112,8 @@ class WSManager extends EventEmitter {
 
       if (packet.s) {
         this.seq = packet.s;
+      } else {
+        this.seq = null;
       }
 
       switch (packet.op) {
@@ -259,7 +261,7 @@ class WSManager extends EventEmitter {
     this.lastHeartbeatSent = new Date().getTime();
   }
 
-  WSEvent(packet) {
+  async WSEvent(packet) {
     this.client.emit('allEvents', packet.d);
 
     switch (packet.t) {
@@ -399,12 +401,12 @@ class WSManager extends EventEmitter {
       }
 
       case 'CALL_CREATE': {
-        this.client.emit("callCreate", packet.d);
+        this.client.emit("callCreate", { call: packet.d });
         break;
       }
 
       case 'CALL_UPDATE': {
-        this.client.emit("callUpdate", packet.d);
+        this.client.emit("callUpdate", { call: packet.d });
         break;
       }
 
@@ -554,12 +556,12 @@ class WSManager extends EventEmitter {
       }
 
       case 'MESSAGE_ACK': {
-        this.client.emit('ignored', packet);
+        this.client.emit('ignored', packet.d);
         break;
       }
 
       case 'GUILD_INTEGRATIONS_UPDATE': {
-        this.client.emit('guildIntergrationUpdated', packet);
+        this.client.emit('guildIntergrationUpdated', packet.d);
         break;
       }
 
@@ -572,7 +574,7 @@ class WSManager extends EventEmitter {
       }
 
       default: {
-        this.client.emit('unknown', packet, this.id);
+        this.client.emit('unknown', packet.d, this.id);
         break;
       }
     }
