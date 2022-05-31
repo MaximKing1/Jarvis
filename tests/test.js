@@ -1,5 +1,5 @@
-const discord = require('../src/index');
-const client = new discord.Client({
+const { Client } = require('../src/index');
+const client = new Client({
   presence: 'dnd',
   status: {
     text: 'Status Text',
@@ -13,7 +13,7 @@ const client = new discord.Client({
 
 client.login('TOKEN');
 
-client.fetchGuild('768189909529133056');
+console.log(client.fetchGuild('768189909529133056'));
 
 client.on('ready', async (user) => {
   console.log(user);

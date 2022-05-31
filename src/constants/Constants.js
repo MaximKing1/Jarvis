@@ -8,4 +8,4 @@ exports.WSCodes = {
 };
 
 exports.GATEWAY = "wss://gateway.discord.gg";
-exports.GATEWAYVERSION = "8";
+exports.GATEWAYVERSION = "9";
