@@ -42,7 +42,7 @@
     "eventemitter3": "^3.3.0",
     "merge": "^2.1.1",
     "node-fetch": "^2.6.1",
-    "ws": "^7.4.3",
+    "ws": "^8.17.1",
     "zlib-sync": "^0.1.7"
   },
   "optionalPeerDependencies": {
